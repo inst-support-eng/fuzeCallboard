@@ -1,22 +1,22 @@
 ## Setup
 
-# install react
+#### install react
 
-open terminal
-install npm
-`npm install npm`
-install react
+open terminal <br>
+install npm <br>
+`npm install npm` <br>
+install react <br>
 `npm install react`
 
-# create new directory
+#### create new directory
 
 in terminal
-`mkdir 'project_name'` replace 'project_name' with whatever you want
+`mkdir 'project_name'` replace 'project_name' with whatever you want <br>
 navigate to new directory with `cd project_name`
 
-# download code and create git
+#### download code and create git
 
-`git init`
+`git init` <br>
 `git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
 
 ### `npm start`
