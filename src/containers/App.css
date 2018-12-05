@@ -31,6 +31,38 @@
   }
 }
 
+.callBoard {
+  background-color: darkgrey;
+}
+
 .adminStats {
   font-family: "Comic Sans MS";
+}
+
+.studentStats {
+  font-family: "Comic Sans MS";
+}
+
+.adminAvailable {
+  background-color: teal;
+}
+
+.adminOnCall {
+  background-color: yellow;
+}
+
+.adminPaused {
+  background-color: red;
+}
+
+.studentAvailable {
+  background-color: teal;
+}
+
+.studentOnCall {
+  background-color: yellow;
+}
+
+.studentPaused {
+  background-color: red;
 }

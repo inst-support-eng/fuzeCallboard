@@ -51,16 +51,15 @@ class App extends Component {
   getCalls() {
     // get admin queue
     setInterval(() => {
+      let url =
+        "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
       axios
-        .get(
-          "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/instru-prem-admin-service-q/status",
-          {
-            headers: {
-              username: keys.username,
-              password: keys.password
-            }
+        .get(url.replace("$QUEUE", keys.adminQueue), {
+          headers: {
+            username: keys.username,
+            password: keys.password
           }
-        )
+        })
         .catch(err => {
           console.log(err);
         })
@@ -81,35 +80,14 @@ class App extends Component {
           });
         });
 
-      // get studentqueue
+      // get student queue
       axios
-        .get("https://rest.data.fuze.com/agentEvents", {
+        .get(url.replace("$QUEUE", keys.studentQueue), {
           headers: {
-            Accept: "application/json",
-            Authorization: keys.apiToken
-          },
-          params: {
-            limit: 100
+            username: keys.username,
+            password: keys.password
           }
         })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(res => {
-          const response = res.data;
-          let agents = response.agentEvents;
-          this.setState({ agents: agents });
-        });
-      axios
-        .get(
-          "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/instru-english-service-q/status",
-          {
-            headers: {
-              username: keys.username,
-              password: keys.password
-            }
-          }
-        )
         .catch(err => {
           console.log(err);
         })
@@ -199,6 +177,35 @@ class App extends Component {
 
   render() {
     this.replaceNames();
+    let adminAvailable = [];
+    let adminOnCall = [];
+    let adminPaused = [];
+    let studentAvailable = [];
+    let studentOnCall = [];
+    let studentPaused = [];
+    this.state.adminQueue.forEach(agent => {
+      if (agent.status == "Available") {
+        adminAvailable.push(agent);
+      }
+      if (agent.status == "On a Call") {
+        adminOnCall.push(agent);
+      }
+      if (agent.paused == true && agent.status != "Unavailable") {
+        adminPaused.push(agent);
+      }
+    });
+
+    this.state.studentQueue.forEach(agent => {
+      if (agent.status == "Available") {
+        studentAvailable.push(agent);
+      }
+      if (agent.status == "On a Call") {
+        studentOnCall.push(agent);
+      }
+      if (agent.paused == true && agent.status != "Unavailable") {
+        studentPaused.push(agent);
+      }
+    });
     return (
       <div className="callBoard">
         <p className="adminStats">
@@ -206,24 +213,63 @@ class App extends Component {
           {this.state.adminCallsCompleted} Wait Time :{" "}
           {this.state.adminWaitTime}
         </p>
-
-        {this.state.adminQueue.map(agent => (
-          <p key={agent.name}>
-            {agent.name} is {agent.status} and took {agent.callsTaken} calls
-          </p>
-        ))}
-
-        <p>
+        <p className="adminAvailable">
+          Available Agents
+          {adminAvailable.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
+        <p className="adminOnCall">
+          On Call
+          {adminOnCall.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
+        <p className="adminPaused">
           {" "}
+          Paused
+          {adminPaused.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
+
+        <p className="studentStats">
           student calls SLA : {this.state.studentSLA} Calls Completed :
           {this.state.studentCallsCompleted} Wait Time :{" "}
           {this.state.studentWaitTime}{" "}
         </p>
-        {this.state.studentQueue.map(agent => (
-          <p>
-            {agent.name} is {agent.status} and took {agent.callsTaken} calls
-          </p>
-        ))}
+        <p className="studentAvailable">
+          Available Agents
+          {studentAvailable.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
+
+        <p className="studentOnCall">
+          On Call
+          {studentOnCall.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
+        <p className="studentPaused">
+          {" "}
+          Paused
+          {studentPaused.map(agent => (
+            <p key={agent.name}>
+              {agent.name} Calls : {agent.callsTaken}
+            </p>
+          ))}
+        </p>
       </div>
     );
   }
