@@ -42,6 +42,7 @@ class App extends Component {
           console.log(err);
         })
         .then(res => {
+          console.log(res);
           const response = res.data;
           let agents = response.agentEvents;
           this.setState({ agents: agents });
@@ -64,6 +65,7 @@ class App extends Component {
           console.log(err);
         })
         .then(res => {
+          console.log(res);
           const response = res.data;
           let temp = response.members;
           for (let i = 0; i < temp.length; i++) {
@@ -92,6 +94,7 @@ class App extends Component {
           console.log(err);
         })
         .then(res => {
+          console.log(res);
           const response = res.data;
           let temp = response.members;
           for (let i = 0; i < temp.length; i++) {
