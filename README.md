@@ -1,5 +1,24 @@
 ## Setup
 
+# install react
+
+open terminal
+install npm
+`npm install npm`
+install react
+`npm install react`
+
+# create new directory
+
+in terminal
+`mkdir 'project_name'` replace 'project_name' with whatever you want
+navigate to new directory with `cd project_name`
+
+# download code and create git
+
+`git init`
+`git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
+
 ### `npm start`
 
 Runs the app in the development mode.<br>
