@@ -1,5 +1,7 @@
 module.exports = {
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD,
-  apiToken: process.env.API_TOKEN
+  username: process.env.username,
+  password: process.env.password,
+  apiToken: process.env.apiToken,
+  adminQueue: process.env.adminQueue,
+  studentQueue: process.env.studentQueue
 };
