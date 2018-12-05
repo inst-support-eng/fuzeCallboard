@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import classes from "./App.css";
-const keys = require("../config/keys");
-
+require("dotenv").config();
 const axios = require("axios");
+const API_TOKEN = process.env.REACT_APP_API_TOKEN;
+const USERNAME = process.env.REACT_APP_USERNAME;
+const PASSWORD = process.env.REACT_APP_PASSWORD;
+const ADMIN_QUEUE = process.env.REACT_APP_ADMIN_QUEUE;
+const STUDENT_QUEUE = process.env.REACT_APP_STUDENT_QUEUE;
 
 class App extends Component {
   constructor() {
@@ -32,7 +36,7 @@ class App extends Component {
         .get("https://rest.data.fuze.com/agentEvents", {
           headers: {
             Accept: "application/json",
-            Authorization: keys.apiToken
+            Authorization: API_TOKEN
           },
           params: {
             limit: 1000
@@ -42,7 +46,6 @@ class App extends Component {
           console.log(err);
         })
         .then(res => {
-          console.log(res);
           const response = res.data;
           let agents = response.agentEvents;
           this.setState({ agents: agents });
@@ -55,21 +58,20 @@ class App extends Component {
       let url =
         "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
       axios
-        .get(url.replace("$QUEUE", keys.adminQueue), {
+        .get(url.replace("$QUEUE", ADMIN_QUEUE), {
           headers: {
-            username: keys.username,
-            password: keys.password
+            username: USERNAME,
+            password: "PASSWORD".replace("PASSWORD", PASSWORD)
           }
         })
         .catch(err => {
           console.log(err);
         })
         .then(res => {
-          console.log(res);
           const response = res.data;
           let temp = response.members;
           for (let i = 0; i < temp.length; i++) {
-            let name = temp[i].name.replace("SIP/", "");
+            let name = temp[i].name.substring(4);
             temp[i].name = name;
           }
           this.setState({
@@ -84,17 +86,16 @@ class App extends Component {
 
       // get student queue
       axios
-        .get(url.replace("$QUEUE", keys.studentQueue), {
+        .get(url.replace("$QUEUE", STUDENT_QUEUE), {
           headers: {
-            username: keys.username,
-            password: keys.password
+            username: USERNAME,
+            password: PASSWORD
           }
         })
         .catch(err => {
           console.log(err);
         })
         .then(res => {
-          console.log(res);
           const response = res.data;
           let temp = response.members;
           for (let i = 0; i < temp.length; i++) {
@@ -120,56 +121,21 @@ class App extends Component {
       let toChange = agent.userId;
       this.state.adminQueue.forEach(admin => {
         let name2 = admin.name;
-        if (name == name2) {
+        if (name === name2) {
           admin.name = toChange;
-          admin.status = this.getStatus(admin.status);
         }
       });
       this.state.studentQueue.forEach(student => {
         let name2 = student.name;
-        if (name == name2) {
+        if (name === name2) {
           student.name = toChange;
-          student.status = this.getStatus(student.status);
         }
       });
     });
   }
 
-  getStatus(status) {
-    let displayValue = ["Agent", "Status", "Calls"];
-
-    let result;
-
-    switch (status) {
-      case 1:
-        result = "Available";
-        break;
-      case 2:
-        result = "On a Call";
-        break;
-      case 3:
-        result = "Busy";
-        break;
-      case 4:
-        result = "Invalid";
-        break;
-      case 5:
-        result = "Unavailable";
-        break;
-      case 6:
-        result = "Ringing";
-        break;
-      case 7:
-        result = "Ringing";
-        break;
-      case 8:
-        result = "On Hold";
-        break;
-      default:
-        result = "Other";
-        break;
-    }
-    return result;
+  counter(int) {
+    int++;
   }
 
   componentDidMount() {
@@ -180,32 +146,46 @@ class App extends Component {
 
   render() {
     this.replaceNames();
+    let counter = setInterval(this.counter(1), 1000);
     let adminAvailable = [];
     let adminOnCall = [];
     let adminPaused = [];
     let studentAvailable = [];
     let studentOnCall = [];
     let studentPaused = [];
+    // status codes
+    // 1: "Available";
+    // 2: "On a Call";
+    // 3: "Busy";
+    // 4: "Invalid";
+    // 5: "Unavailable";
+    // 6: "Ringing";
+    // 7: "Ringing";
+    // 8: "On Hold";
+
+    // paused status comes from paused param
+    // paused param is a boolean
+
     this.state.adminQueue.forEach(agent => {
-      if (agent.status == "Available") {
+      if (agent.status === 1 && agent.paused === false) {
         adminAvailable.push(agent);
       }
-      if (agent.status == "On a Call") {
+      if (agent.status === 2) {
         adminOnCall.push(agent);
       }
-      if (agent.paused == true && agent.status != "Unavailable") {
+      if (agent.paused === true && agent.status !== 5) {
         adminPaused.push(agent);
       }
     });
 
     this.state.studentQueue.forEach(agent => {
-      if (agent.status == "Available") {
+      if (agent.status === 1) {
         studentAvailable.push(agent);
       }
-      if (agent.status == "On a Call") {
+      if (agent.status === 2) {
         studentOnCall.push(agent);
       }
-      if (agent.paused == true && agent.status != "Unavailable") {
+      if (agent.paused === true && agent.status !== 5) {
         studentPaused.push(agent);
       }
     });
@@ -237,7 +217,7 @@ class App extends Component {
           Paused
           {adminPaused.map(agent => (
             <p key={agent.name}>
-              {agent.name} Calls : {agent.callsTaken}
+              {agent.name} Paused for {counter}
             </p>
           ))}
         </p>
@@ -269,7 +249,7 @@ class App extends Component {
           Paused
           {studentPaused.map(agent => (
             <p key={agent.name}>
-              {agent.name} Calls : {agent.callsTaken}
+              {agent.name} Paused for : {counter}
             </p>
           ))}
         </p>
