@@ -2,6 +2,8 @@ body {
   font-family: Arial;
   color: white;
   background-color: #3c6478;
+  padding: 10px 10px 0 10px;
+  font-size: 2em;
 }
 .item1 {
   grid-area: left;
