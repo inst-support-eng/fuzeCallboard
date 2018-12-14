@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class AdminPaused extends React.Component {
+export default class StudentOnCall extends React.Component {
   render() {
     return (
       <tbody>

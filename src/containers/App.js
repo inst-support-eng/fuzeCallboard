@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import classes from "./App.css";
-import StudentAvailable from ".././components/StudentAvailable/StudentAvailable";
-import StudentOnCall from ".././components/StudentOnCall/StudentOnCall";
+import StudentAgents from ".././components/StudentAgents/StudentAgents";
+import AdminAgents from ".././components/AdminAgents/AdminAgents";
 import StudentPaused from ".././components/StudentPaused/StudentPaused";
-import AdminAvailable from ".././components/AdminAvailable/AdminAvailable";
-import AdminOnCall from ".././components/AdminOnCall/AdminOnCall";
+// import AdminAvailable from ".././components/AdminAvailable/AdminAvailable";
+// import AdminOnCall from ".././components/AdminOnCall/AdminOnCall";
 import AdminPaused from ".././components/AdminPaused/AdminPaused";
 require("dotenv").config();
 const axios = require("axios");
@@ -52,7 +52,6 @@ class App extends Component {
           console.log(err);
         })
         .then(res => {
-          console.log(res);
           const response = res.data;
           let agents = response.agentEvents;
           this.setState({ agents: agents });
@@ -84,7 +83,7 @@ class App extends Component {
           this.setState({
             adminQueue: temp,
             adminCallsWaiting: response.callsWaiting,
-            adminWaitTime: response.avgHoldTime,
+            adminWaitTime: response.maxWaiting,
             adminCallsCompleted: response.numCompleted,
             adminCallsAbandoned: response.numAbandoned,
             adminSLA: response.serviceLevelPerf
@@ -104,6 +103,12 @@ class App extends Component {
         })
         .then(res => {
           const response = res.data;
+          let callsWaiting = response.callsWaiting;
+          let waitTime = response.maxWaiting;
+          let callsCompleted = response.numCompleted;
+          let callsAbandoned = response.numAbandoned;
+          let sla = response.serviceLevelPerf;
+
           let temp = response.members;
           for (let i = 0; i < temp.length; i++) {
             let name = temp[i].name.substring(4);
@@ -111,11 +116,11 @@ class App extends Component {
           }
           this.setState({
             studentQueue: temp,
-            studentCallsWaiting: response.callsWaiting,
-            studentWaitTime: response.avgHoldTime,
-            studentCallsCompleted: response.numCompleted,
-            studentCallsAbandoned: response.numAbandoned,
-            studentSLA: response.serviceLevelPerf
+            studentCallsWaiting: callsWaiting,
+            studentWaitTime: waitTime,
+            studentCallsCompleted: callsCompleted,
+            studentCallsAbandoned: callsAbandoned,
+            studentSLA: sla
           });
         });
     }, 5000);
@@ -149,11 +154,7 @@ class App extends Component {
 
   render() {
     this.replaceNames();
-    let adminAvailable = [];
-    let adminOnCall = [];
     let adminPaused = [];
-    let studentAvailable = [];
-    let studentOnCall = [];
     let studentPaused = [];
     // status codes
     // 1: "Available";
@@ -168,94 +169,48 @@ class App extends Component {
     // paused status comes from paused param
     // paused param is a boolean
 
-    this.state.adminQueue.forEach(agent => {
-      if (agent.status === 1 && agent.paused === false) {
-        adminAvailable.push(agent);
-      }
-      if (agent.status === 2) {
-        adminOnCall.push(agent);
-      }
-      if (agent.paused === true && agent.status !== 5) {
-        adminPaused.push(agent);
-      }
-    });
-
-    this.state.studentQueue.forEach(agent => {
-      if (agent.status === 1) {
-        studentAvailable.push(agent);
-      }
-      if (agent.status === 2) {
-        studentOnCall.push(agent);
-      }
-      if (agent.paused === true && agent.status !== 5) {
-        studentPaused.push(agent);
-      }
-    });
     return (
-      <div class="grid-container">
-        <div class="item1">
+      <div className="grid-container">
+        <div className="item1">
           {" "}
           Student Phones
-          <div class="stats">
-            <div class="cbstats stats1">
+          <div className="stats">
+            <div className="cbstats stats1">
               Calls Waiting{" "}
-              <div class="queuestats" id="st-callswaiting">
-                {this.studentCallsWaiting}
+              <div className="queuestats" id="st-callswaiting">
+                {this.state.studentCallsWaiting}
               </div>
             </div>
-            <div class="cbstats stats2">
+            <div className="cbstats stats2">
               Wait Time{" "}
-              <div class="queuestats" id="st-call-waittime">
-                {this.studentWaitTime}
+              <div className="queuestats" id="st-call-waittime">
+                {this.state.studentWaitTime}
               </div>
             </div>
-            <div class="cbstats stats3">
-              Completed <div class="queuestats" id="st-calls-completed" />
+            <div className="cbstats stats3">
+              Completed{" "}
+              <div className="queuestats" id="st-calls-completed">
+                {this.state.studentCallsCompleted}
+              </div>
             </div>
-            <div class="cbstats stats4">
-              SLA <div class="queuestats" id="st-call-sla" />
+            <div className="cbstats stats4">
+              SLA{" "}
+              <div className="queuestats" id="st-call-sla">
+                {this.state.studentSLA}
+              </div>
             </div>
-            <div class="cbstats stats5 agentcontainer">
+            <StudentAgents studentQueue={this.state.studentQueue} />
+            <div className="cbstats stats6 agentcontainer">
               <table>
-                <tr>
-                  <td>Available Agents:</td>
-                  <td id="st-calls-available-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Paused Agents:</td>
+                    <td id="st-calls-paused-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="calls-available" id="st-calls-available">
-                  {studentAvailable.map(agent => {
-                    return [
-                      <StudentAvailable
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
-              </div>
-              <div>
-                <table class="calls-oncall" id="st-calls-oncall">
-                  {studentOnCall.map(agent => {
-                    return [
-                      <StudentOnCall
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
-              </div>
-            </div>
-            <div class="cbstats stats6 agentcontainer">
-              <table>
-                <tr>
-                  <td>Paused Agents:</td>
-                  <td id="st-calls-paused-total" />
-                </tr>
-              </table>
-              <div>
-                <table class="calls-paused" id="st-calls-paused">
+                <table className="calls-paused" id="st-calls-paused">
                   {studentPaused.map(agent => {
                     return [
                       <StudentPaused
@@ -267,79 +222,66 @@ class App extends Component {
                 </table>
               </div>
               <div>
-                <table class="calls-offline" id="st-calls-offline">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
+                <table className="calls-offline" id="st-calls-offline">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="item2">
+        <div className="item2">
           {" "}
           Admin Phones
-          <div class="stats">
-            <div class="cbstats stats1">
-              Calls Waiting <div class="queuestats" id="at-callswaiting" />
-            </div>
-            <div class="cbstats stats2">
-              Wait Time <div class="queuestats" id="at-call-waittime" />
-            </div>
-            <div class="cbstats stats3">
-              Completed <div class="queuestats" id="at-calls-completed" />
-            </div>
-            <div class="cbstats stats4">
-              SLA <div class="queuestats" id="at-call-sla" />
-            </div>
-            <div class="cbstats stats5 agentcontainer">
-              <table>
-                <tr>
-                  <td>Available Agents:</td>
-                  <td id="at-calls-available-total" />
-                </tr>
-              </table>
-              <div>
-                <table class="calls-available" id="at-calls-available">
-                  {adminAvailable.map(agent => {
-                    return [
-                      <AdminAvailable
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
-              </div>
-              <div>
-                <table class="calls-oncall" id="at-calls-oncall">
-                  {adminOnCall.map(agent => {
-                    return [
-                      <AdminOnCall
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
+          <div className="stats">
+            <div className="cbstats stats1">
+              Calls Waiting{" "}
+              <div className="queuestats" id="at-callswaiting">
+                {this.state.adminCallsWaiting}
               </div>
             </div>
-            <div class="cbstats stats6 agentcontainer at-calls-paused-tab">
+            <div className="cbstats stats2">
+              Wait Time{" "}
+              <div className="queuestats" id="at-call-waittime">
+                {this.state.adminWaitTime}
+              </div>
+            </div>
+            <div className="cbstats stats3">
+              Completed{" "}
+              <div className="queuestats" id="at-calls-completed">
+                {this.state.adminCallsCompleted}
+              </div>
+            </div>
+            <div className="cbstats stats4">
+              SLA{" "}
+              <div className="queuestats" id="at-call-sla">
+                {this.state.adminSLA}
+              </div>
+            </div>
+            <AdminAgents adminQueue={this.state.adminQueue} />
+            <div className="cbstats stats6 agentcontainer at-calls-paused-tab">
               <table>
-                <tr>
-                  <td>Paused Agents:</td>
-                  <td id="at-calls-paused-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Paused Agents:</td>
+                    <td id="at-calls-paused-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="calls-paused" id="at-calls-paused">
+                <table className="calls-paused" id="at-calls-paused">
                   {adminPaused.map(agent => {
                     return [
                       <AdminPaused
@@ -351,141 +293,159 @@ class App extends Component {
                 </table>
               </div>
               <div>
-                <table class="calls-offline" id="at-calls-offline">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
+                <table className="calls-offline" id="at-calls-offline">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="item3">
+        <div className="item3">
           {" "}
           Student Chats
-          <div class="stats">
-            <div class="cbstats stats1">
-              Queued <div class="queuestats" id="at-queuedchats" />
+          <div className="stats">
+            <div className="cbstats stats1">
+              Queued <div className="queuestats" id="at-queuedchats" />
             </div>
-            <div class="cbstats stats2">
-              Wait Time <div class="queuestats" id="at-chat-waittime" />
+            <div className="cbstats stats2">
+              Wait Time <div className="queuestats" id="at-chat-waittime" />
             </div>
-            <div class="cbstats stats3">
-              Active Chats <div class="queuestats" id="at-activechats" />
+            <div className="cbstats stats3">
+              Active Chats <div className="queuestats" id="at-activechats" />
             </div>
-            <div class="cbstats stats4">
-              SLA <div class="queuestats" id="at-chat-sla" />
+            <div className="cbstats stats4">
+              SLA <div className="queuestats" id="at-chat-sla" />
             </div>
-            <div class="cbstats stats5 agentcontainer-chats">
+            <div className="cbstats stats5 agentcontainer-chats">
               <table>
-                <tr>
-                  <td>Accepting:</td>
-                  <td id="st-chats-available-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Accepting:</td>
+                    <td id="st-chats-available-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="chats-active" id="st-chats-available">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
+                <table className="chats-active" id="st-chats-available">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
-            <div class="cbstats stats6 agentcontainer-chats">
+            <div className="cbstats stats6 agentcontainer-chats">
               <table>
-                <tr>
-                  <td>Not Accepting:</td>
-                  <td id="st-chats-paused-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Not Accepting:</td>
+                    <td id="st-chats-paused-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="chats-paused" id="st-chats-paused">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>32</td>
-                  </tr>
+                <table className="chats-paused" id="st-chats-paused">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="item4">
+        <div className="item4">
           {" "}
           Admin Chats
-          <div class="stats">
-            <div class="cbstats stats1">
-              Queued <div class="queuestats" id="st-queuedchats" />
+          <div className="stats">
+            <div className="cbstats stats1">
+              Queued <div className="queuestats" id="st-queuedchats" />
             </div>
-            <div class="cbstats stats2">
-              Wait Time <div class="queuestats" id="st-chat-waittime" />
+            <div className="cbstats stats2">
+              Wait Time <div className="queuestats" id="st-chat-waittime" />
             </div>
-            <div class="cbstats stats3">
-              Active Chats <div class="queuestats" id="st-activechats" />
+            <div className="cbstats stats3">
+              Active Chats <div className="queuestats" id="st-activechats" />
             </div>
-            <div class="cbstats stats4">
-              SLA <div class="queuestats" id="st-chat-sla" />
+            <div className="cbstats stats4">
+              SLA <div className="queuestats" id="st-chat-sla" />
             </div>
-            <div class="cbstats stats5 agentcontainer-chats">
+            <div className="cbstats stats5 agentcontainer-chats">
               <table>
-                <tr>
-                  <td>Paused:</td>
-                  <td id="at-chats-available-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Paused:</td>
+                    <td id="at-chats-available-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="chats-active" id="at-chats-available">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>3/4</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>3/4</td>
-                  </tr>
+                <table className="chats-active" id="at-chats-available">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>3/4</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>3/4</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
-            <div class="cbstats stats6 agentcontainer-chats">
+            <div className="cbstats stats6 agentcontainer-chats">
               <table>
-                <tr>
-                  <td>Paused:</td>
-                  <td id="at-chats-paused-total" />
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Paused:</td>
+                    <td id="at-chats-paused-total" />
+                  </tr>
+                </tbody>
               </table>
               <div>
-                <table class="chats-paused" id="at-chats-paused">
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>3/4</td>
-                  </tr>
-                  <tr>
-                    <td>Test Agent</td>
-                    <td>10:15</td>
-                    <td>3/4</td>
-                  </tr>
+                <table className="chats-paused" id="at-chats-paused">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>3/4</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>3/4</td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
