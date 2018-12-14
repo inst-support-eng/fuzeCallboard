@@ -58,7 +58,7 @@ body {
 .cbstats {
   height: 60px;
   padding: 10px 0;
-  font-size: 1em;
+  font-size: 1.5em;
   border-radius: 3.75px;
   background-color: #0d3d56;
   box-shadow: 0 0 5px #181818;
@@ -72,10 +72,11 @@ body {
   font-size: 1.5em;
 }
 .agentcontainer-chats {
-  min-height: 325px;
+  min-height: 335px;
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
+  font-size: 1.5em;
 }
 .queuestats {
   padding: 10px 0;
@@ -88,6 +89,7 @@ table {
 tr {
   padding: 10px;
   margin-top: 5px;
+  border-bottom: 5px solid #0d3d56;
 }
 .calls-available {
   background-color: #1287a8;
