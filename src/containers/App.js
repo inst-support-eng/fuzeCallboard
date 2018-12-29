@@ -282,14 +282,16 @@ class App extends Component {
               </table>
               <div>
                 <table className="calls-paused" id="at-calls-paused">
-                  {adminPaused.map(agent => {
-                    return [
-                      <AdminPaused
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
+                  <tr>
+                    {adminPaused.map(agent => {
+                      return [
+                        <AdminPaused
+                          name={agent.name}
+                          callsTaken={agent.callsTaken}
+                        />
+                      ];
+                    })}
+                  </tr>
                 </table>
               </div>
               <div>
