@@ -1,6 +1,7 @@
 import React from "react";
 import AdminOnCall from "./AdminOnCall/AdminOnCall";
 import AdminAvailable from "./AdminAvailable/AdminAvailable";
+import AdminPaused from "./AdminPaused/AdminPaused";
 
 export default class AdminAgents extends React.Component {
   render() {
@@ -16,7 +17,7 @@ export default class AdminAgents extends React.Component {
         adminOnCall.push(agent);
       }
       if (agent.status === 3) {
-        adminOnCall.push(agent);
+        adminPaused.push(agent);
       }
     });
     return (
