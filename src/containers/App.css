@@ -57,7 +57,7 @@ body {
     "left center top-right"
     "left center bottom-right";
   grid-row-gap: 10px;
-  padding: 10px;
+  padding: 5px 10px;
   grid-column-gap: 20px;
   text-align: left;
 }
@@ -77,11 +77,11 @@ body {
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
-  min-height: 900px;
+  min-height: 100%;
   font-size: 1.5em;
 }
 .agentcontainer-chats {
-  min-height: 50%;
+  min-height: 100%;
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
