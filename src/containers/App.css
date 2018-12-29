@@ -58,8 +58,8 @@ body {
   text-align: center;
 }
 .cbstats {
-  height: 60px;
-  padding: 10px 0;
+  height: 70px;
+  padding: 5px 0;
   font-size: 1.5em;
   border-radius: 3.75px;
   background-color: #0d3d56;
@@ -81,7 +81,7 @@ body {
   font-size: 1.5em;
 }
 .queuestats {
-  padding: 10px 0;
+  padding: 5px 0;
   font-size: 1.5em;
 }
 table {
