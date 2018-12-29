@@ -83,7 +83,7 @@ body {
   font-size: 1.5em;
 }
 .agentcontainer-chats {
-  min-height: 450px;
+  min-height: 375px;
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
