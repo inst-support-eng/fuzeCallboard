@@ -6,12 +6,16 @@ export default class AdminAgents extends React.Component {
   render() {
     let adminAvailable = [];
     let adminOnCall = [];
+    let adminPaused = [];
 
     this.props.adminQueue.forEach(agent => {
       if (agent.status === 1) {
         adminAvailable.push(agent);
       }
       if (agent.status === 2) {
+        adminOnCall.push(agent);
+      }
+      if (agent.status === 3) {
         adminOnCall.push(agent);
       }
     });
@@ -42,6 +46,18 @@ export default class AdminAgents extends React.Component {
             {adminOnCall.map(agent => {
               return [
                 <AdminOnCall name={agent.name} callsTaken={agent.callsTaken} />
+              ];
+            })}
+          </table>
+        </div>
+        <div>
+          <table className="calls-paused" id="at-calls-available">
+            {adminPaused.map(agent => {
+              return [
+                <AdminPaused
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                />
               ];
             })}
           </table>
