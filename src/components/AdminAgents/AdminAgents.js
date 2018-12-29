@@ -19,6 +19,9 @@ export default class AdminAgents extends React.Component {
       if (agent.status === 3) {
         adminPaused.push(agent);
       }
+      if (agent.status === 5) {
+        adminPaused.push(agent);
+      }
     });
     return (
       <div className="cbstats stats5 agentcontainer">
