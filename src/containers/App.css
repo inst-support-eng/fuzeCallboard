@@ -4,7 +4,7 @@ body {
   background-color: #3c6478;
   padding: 20px 20px 0 20px;
   height: 100%;
-  width: 98%;
+  width: 97%;
 }
 .item1 {
   grid-area: left;
@@ -79,11 +79,11 @@ body {
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
-  min-height: 900px;
+  min-height: 850px;
   font-size: 1.5em;
 }
 .agentcontainer-chats {
-  min-height: 375px;
+  min-height: 350px;
   text-align: left;
   padding: 0 5px 0 5px;
   overflow: hidden;
