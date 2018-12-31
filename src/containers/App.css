@@ -6,11 +6,11 @@ body {
   height: 100vh;
   position: fixed; 
   overflow-y: scroll;
-  padding-left: 1vh;
+  padding-left: 2.5vh;
 }
 .grid-container {
   height: 100vh;
-  width: 99vw;
+  width: 97vw;
   display: grid;
   grid-template-areas:
     "left center top-right"
@@ -65,7 +65,7 @@ body {
 .calls-offline {background-color: gray;}
 .chats-active {background-color: #1287a8;}
 .chats-paused {background-color: #ad2a1a;color: white;}
-.row-title {height: 3vh;font-size: 2vh;font-weight: bold;padding-top: .5vh;}
+.row-title {height: 3vh;font-size: 2vh;font-weight: bold;padding-top: 1vh;}
 table {width: 100%;border-collapse:collapse;}
 tr {border-bottom: .25vh solid #0d3d56;}
 td {padding-left: 0.5vh;padding-right: 0.5vh;}
