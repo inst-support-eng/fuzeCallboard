@@ -173,7 +173,7 @@ class App extends Component {
       <div className="grid-container">
         <div className="item1">
           {" "}
-          Student Phones
+          <div className="row-title">Student Phones</div>
           <div className="stats">
             <div className="cbstats stats1">
               Calls Waiting{" "}
@@ -244,7 +244,7 @@ class App extends Component {
         </div>
         <div className="item2">
           {" "}
-          Admin Phones
+          <div className="row-title">Admin Phones</div>
           <div className="stats">
             <div className="cbstats stats1">
               Calls Waiting{" "}
@@ -315,7 +315,7 @@ class App extends Component {
         </div>
         <div className="item3">
           {" "}
-          Student Chats
+          <div className="row-title">Student Chats</div>
           <div className="stats">
             <div className="cbstats stats1">
               Queued <div className="queuestats" id="at-queuedchats" />
@@ -385,7 +385,7 @@ class App extends Component {
         </div>
         <div className="item4">
           {" "}
-          Admin Chats
+          <div className="row-title">Admin Chats</div>
           <div className="stats">
             <div className="cbstats stats1">
               Queued <div className="queuestats" id="st-queuedchats" />

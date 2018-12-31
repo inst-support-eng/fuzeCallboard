@@ -6,6 +6,7 @@ body {
   height: 100vh;
   position: fixed; 
   overflow-y: scroll;
+  padding-left: 1vh;
 }
 .grid-container {
   height: 100vh;
@@ -65,6 +66,6 @@ body {
 .chats-active {background-color: #1287a8;}
 .chats-paused {background-color: #ad2a1a;color: white;}
 .row-title {height: 3vh;font-size: 2vh;}
-table {width: 100%;margin-bottom: -2px;}
+table {width: 100%;}
 tr {outline: .25vh solid #0d3d56;}
 td {padding: 0.25vh 0 0.25vh 0;}
