@@ -37,14 +37,14 @@ body {
 .agentcontainer {
   text-align: left;
   height: 85vh;
-  padding: 0 1vh 0 1vh;
+  padding: 0 0.25vh 0 0.25vh;
   overflow: hidden;
   font-size: 2.5vh;
 }
 .agentcontainer-chats {
   text-align: left;
   height: 35vh;
-  padding: 0 1vh 0 1vh;
+  padding: 0 0.25vh 0 0.25vh;
   overflow: hidden;
   font-size: 2.5vh;
 }
@@ -68,4 +68,4 @@ body {
 .row-title {height: 3vh;font-size: 2vh;font-weight: bold;padding-top: .5vh;}
 table {width: 100%;border-collapse:collapse;}
 tr {border-bottom: .25vh solid #0d3d56;}
-td {padding: 0.25vh 0 0.25vh 0;}
+td {padding-left: 0.5vh;}
