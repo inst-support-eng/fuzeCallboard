@@ -33,19 +33,17 @@ body {
   background-color: #0d3d56;
   box-shadow: 0 0 .5vh #181818;
   min-width: 7vw;
-  font-weight: bold;
 }
 .agentcontainer {
   text-align: left;
-  height: 84.5vh;
+  height: 85vh;
   padding: 0 1vh 0 1vh;
   overflow: hidden;
   font-size: 2.5vh;
-  font-weight: 
 }
 .agentcontainer-chats {
   text-align: left;
-  height: 34.5vh;
+  height: 35vh;
   padding: 0 1vh 0 1vh;
   overflow: hidden;
   font-size: 2.5vh;
@@ -69,5 +67,5 @@ body {
 .chats-paused {background-color: #ad2a1a;color: white;}
 .row-title {height: 3vh;font-size: 2vh;font-weight: bold;padding-top: .5vh;}
 table {width: 100%;}
-tr {outline: .25vh solid #0d3d56;}
+tr {border-style: solid; border-color: #0d3d56;}
 td {padding: 0.25vh 0 0.25vh 0;}
