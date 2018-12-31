@@ -204,7 +204,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Paused Agents:</td>
+                    <td>Paused:</td>
                     <td id="st-calls-paused-total" />
                   </tr>
                 </tbody>
@@ -275,7 +275,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Paused Agents:</td>
+                    <td>Paused:</td>
                     <td id="at-calls-paused-total" />
                   </tr>
                 </tbody>
@@ -331,7 +331,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Accepting:</td>
+                    <td>Available:</td>
                     <td id="st-chats-available-total" />
                   </tr>
                 </tbody>
@@ -357,7 +357,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Not Accepting:</td>
+                    <td>Paused:</td>
                     <td id="st-chats-paused-total" />
                   </tr>
                 </tbody>
@@ -401,7 +401,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Paused:</td>
+                    <td>Available:</td>
                     <td id="at-chats-available-total" />
                   </tr>
                 </tbody>

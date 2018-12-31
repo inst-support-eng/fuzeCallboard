@@ -20,7 +20,7 @@ export default class StudentAgents extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>Available Agents:</td>
+              <td>Available:</td>
               <td id="at-calls-available-total" />
             </tr>
           </tbody>
