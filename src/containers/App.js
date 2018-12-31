@@ -282,7 +282,6 @@ class App extends Component {
               </table>
               <div>
                 <table className="calls-paused" id="at-calls-paused">
-                  <tr>
                     {adminPaused.map(agent => {
                       return [
                         <AdminPaused
@@ -291,7 +290,6 @@ class App extends Component {
                         />
                       ];
                     })}
-                  </tr>
                 </table>
               </div>
               <div>

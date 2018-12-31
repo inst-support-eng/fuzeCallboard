@@ -66,6 +66,6 @@ body {
 .chats-active {background-color: #1287a8;}
 .chats-paused {background-color: #ad2a1a;color: white;}
 .row-title {height: 3vh;font-size: 2vh;font-weight: bold;padding-top: .5vh;}
-table {width: 100%;}
-tr {border-style: solid; border-color: #0d3d56;}
+table {width: 100%;border-collapse:collapse;}
+tr {border-bottom: .25vh solid #0d3d56;}
 td {padding: 0.25vh 0 0.25vh 0;}
