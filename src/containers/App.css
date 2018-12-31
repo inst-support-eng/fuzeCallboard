@@ -2,124 +2,69 @@ body {
   font-family: Arial;
   color: white;
   background-color: #3c6478;
-  padding: 20px 20px 0 20px;
-  height: 100%;
-  width: 97%;
+  width: 99vw;
+  height: 100vh;
+  position: fixed; 
+  overflow-y: scroll;
 }
-.item1 {
-  grid-area: left;
-  height: 100%;
-}
-.item2 {
-  grid-area: center;
-  height: 100%;
-}
-.item3 {
-  grid-area: top-right;
-  height: 100%;
-}
-.item4 {
-  grid-area: bottom-right;
-  height: 100%;
-}
-.stats1 {
-  grid-area: one;
-}
-.stats2 {
-  grid-area: two;
-}
-.stats3 {
-  grid-area: three;
-}
-.stats4 {
-  grid-area: four;
-}
-.stats5 {
-  grid-area: five;
-}
-.stats6 {
-  grid-area: six;
+.grid-container {
+  height: 100vh;
+  width: 99vw;
+  display: grid;
+  grid-template-areas:
+    "left center top-right"
+    "left center bottom-right";
+  grid-column-gap: 1vw;
+  text-align: center;
 }
 .stats {
   display: grid;
   grid-template-areas:
     "one two three four"
     "five five six six";
-  grid-gap: 10px;
-  grid-row-gap: 10px;
-  padding-top: 10px;
-  height: 100%;
-
-}
-.grid-container {
-  width: 100%;
-  min-height: 100%;
-  display: grid;
-  grid-template-areas:
-    "left center top-right"
-    "left center bottom-right";
-  grid-row-gap: 10px;
-  padding: 5px 10px;
-  grid-column-gap: 20px;
-  text-align: left;
-}
-.grid-container > div {
-  text-align: center;
+  grid-gap: 1vh;
 }
 .cbstats {
-  height: 75px;
-  padding: 5px 0;
-  font-size: 1.5em;
-  border-radius: 3.75px;
+  height: 9vh;
+  padding: .5vh 0;
+  font-size: 2vh;
+  border-radius: .25vh;
   background-color: #0d3d56;
-  box-shadow: 0 0 5px #181818;
-  min-width: 125px;
+  box-shadow: 0 0 .5vh #181818;
+  min-width: 7vw;
 }
 .agentcontainer {
   text-align: left;
-  padding: 0 5px 0 5px;
+  height: 84.5vh;
+  padding: 0 1vh 0 1vh;
   overflow: hidden;
-  min-height: 850px;
-  font-size: 1.5em;
+  font-size: 2.5vh;
 }
 .agentcontainer-chats {
-  min-height: 350px;
   text-align: left;
-  padding: 0 5px 0 5px;
+  height: 34.5vh;
+  padding: 0 1vh 0 1vh;
   overflow: hidden;
-  font-size: 1.5em;
+  font-size: 2.5vh;
 }
-.queuestats {
-  padding: 5px 0;
-  font-size: 1.5em;
-}
-table {
-  width: 100%;
-  margin-top: 5px;
-}
-tr {
-  padding: 10px;
-  margin-top: 5px;
-  border-bottom: 5px solid #0d3d56;
-}
-.calls-available {
-  background-color: #1287a8;
-}
-.calls-oncall {
-  background-color: #93a661;
-  color: white;
-}
-.calls-paused {
-  background-color: #ad2a1a;
-  color: white;
-}
-.calls-offline {
-  background-color: gray;
-}
-.chats-active {
-  background-color: #1287a8;
-}
-.chats-paused {
-  background-color: #ad2a1a;
-  color: white;
-}
+.item1 {grid-area: left;}
+.item2 {grid-area: center;}
+.item3 {grid-area: top-right;}
+.item4 {grid-area: bottom-right;}
+.stats1 {grid-area: one;}
+.stats2 {grid-area: two;}
+.stats3 {grid-area: three;}
+.stats4 {grid-area: four;}
+.stats5 {grid-area: five;}
+.stats6 {grid-area: six;}
+.queuestats {padding: 1vh 0;font-size: 4.5vh;}
+.calls-available {background-color: #1287a8;}
+.calls-oncall {background-color: #93a661;color: white;}
+.calls-paused {background-color: #ad2a1a;color: white;}
+.calls-offline {background-color: gray;}
+.chats-active {background-color: #1287a8;}
+.chats-paused {background-color: #ad2a1a;color: white;}
+.row-title {height: 3vh;font-size: 2vh;}
+table {width: 100%;margin-bottom: -2px;}
+tr {outline: .25vh solid #0d3d56;}
+td {padding: 0.25vh 0 0.25vh 0;}
