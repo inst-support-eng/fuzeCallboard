@@ -6,7 +6,7 @@ export default class StudentOnCall extends React.Component {
       <tbody>
         <tr>
           <td>{this.props.name}</td>
-          <td>{this.props.callsTaken}</td>
+          <td align="right">{this.props.callsTaken}</td>
         </tr>
       </tbody>
     );
