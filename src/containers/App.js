@@ -234,19 +234,8 @@ class App extends Component {
               </div>
             </div>
             <StudentAgents studentQueue={this.state.studentQueue} />
-<<<<<<< HEAD
             <StudentPaused studentQueue={this.state.studentQueue} />
-=======
             <div className="cbstats stats6 agentcontainer">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Paused:</td>
-                    <td id="st-calls-paused-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
                 <table className="calls-paused" id="st-calls-paused">
                   {studentPaused.map(agent => {
                     return [
@@ -258,28 +247,6 @@ class App extends Component {
                   })}
                 </table>
               </div>
-              <div>
-                <table className="calls-offline" id="st-calls-offline">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
->>>>>>> 6801c4c196c5d9b8ec2ec1df861a049d2ed1fb08
-          </div>
-        </div>
         <div className="item2">
           {" "}
           <div className="row-title">Admin Phones</div>
@@ -309,48 +276,8 @@ class App extends Component {
               </div>
             </div>
             <AdminAgents adminQueue={this.state.adminQueue} />
-<<<<<<< HEAD
+
             <AdminPaused adminQueue={this.state.adminQueue} />
-=======
-            <div className="cbstats stats6 agentcontainer at-calls-paused-tab">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Paused:</td>
-                    <td id="at-calls-paused-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                <table className="calls-paused" id="at-calls-paused">
-                    {adminPaused.map(agent => {
-                      return [
-                        <AdminPaused
-                          name={agent.name}
-                          callsTaken={agent.callsTaken}
-                        />
-                      ];
-                    })}
-                </table>
-              </div>
-              <div>
-                <table className="calls-offline" id="at-calls-offline">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
->>>>>>> 6801c4c196c5d9b8ec2ec1df861a049d2ed1fb08
           </div>
         </div>
         <div className="item3">
@@ -493,7 +420,6 @@ class App extends Component {
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
