@@ -5,9 +5,7 @@ export default class StudentPaused extends React.Component {
   render() {
     let studentPaused = [];
     let studentUnavailable = [];
-    console.log(this.props.studentQueue);
     this.props.studentQueue.forEach(agent => {
-      //console.log(agent.name + " : " + agent.timer);
       if (agent.paused === true && agent.status !== 5) {
         studentPaused.push(agent);
       }
@@ -30,7 +28,12 @@ export default class StudentPaused extends React.Component {
           <table className="calls-paused" id="st-calls-paused">
             {studentPaused.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>
@@ -39,7 +42,12 @@ export default class StudentPaused extends React.Component {
           <table className="calls-offline" id="st-calls-offline">
             {studentUnavailable.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>

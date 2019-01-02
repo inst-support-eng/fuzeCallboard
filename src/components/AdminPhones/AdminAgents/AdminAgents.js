@@ -28,7 +28,12 @@ export default class AdminAgents extends React.Component {
           <table className="calls-available" id="at-calls-available">
             {adminAvailable.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>
@@ -37,7 +42,12 @@ export default class AdminAgents extends React.Component {
           <table className="calls-oncall" id="at-calls-oncall">
             {adminOnCall.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>

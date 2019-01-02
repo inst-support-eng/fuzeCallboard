@@ -29,7 +29,12 @@ export default class AdminPaused extends React.Component {
           <table className="calls-paused" id="at-calls-paused">
             {adminPaused.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>
@@ -38,7 +43,12 @@ export default class AdminPaused extends React.Component {
           <table className="calls-offline" id="at-calls-offline">
             {adminUnavailable.map(agent => {
               return [
-                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  key={agent.name}
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>

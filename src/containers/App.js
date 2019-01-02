@@ -65,7 +65,7 @@ class App extends Component {
         .get(url.replace("$QUEUE", ADMIN_QUEUE), {
           headers: {
             username: USERNAME,
-            password: "PASSWORD".replace("PASSWORD", PASSWORD)
+            password: PASSWORD
           }
         })
         .catch(err => {
@@ -172,7 +172,6 @@ class App extends Component {
           studentWaitTime={this.state.studentWaitTime}
           studentCallsCompleted={this.state.studentCallsCompleted}
           studentSLA={this.state.studentSLA}
-          studentQueue={this.state.studentQueue}
           studentQueue={this.state.studentQueue}
         />
 
