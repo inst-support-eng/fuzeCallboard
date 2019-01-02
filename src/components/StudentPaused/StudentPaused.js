@@ -21,11 +21,8 @@ export default class StudentPaused extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>
-                Paused Agents:{" "}
-                {studentPaused.length + studentUnavailable.length}
-              </td>
-              <td id="st-calls-paused-total" />
+              <td>Paused Agents: </td>
+              <td id="st-calls-paused-total">{studentPaused.length} </td>
             </tr>
           </tbody>
         </table>

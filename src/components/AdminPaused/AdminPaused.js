@@ -20,10 +20,8 @@ export default class AdminPaused extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>
-                Paused Agents: {adminUnavailable.length + adminPaused.length}
-              </td>
-              <td id="at-calls-paused-total" />
+              <td>Paused Agents:</td>
+              <td id="at-calls-paused-total">{adminPaused.length} </td>
             </tr>
           </tbody>
         </table>

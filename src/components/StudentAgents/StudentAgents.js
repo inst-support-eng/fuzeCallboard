@@ -18,8 +18,8 @@ export default class StudentAgents extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>Available Agents: {studentAvailable.length}</td>
-              <td id="st-calls-available-total" />
+              <td>Available Agents:</td>
+              <td id="st-calls-available-total">{studentAvailable.length} </td>
             </tr>
           </tbody>
         </table>
