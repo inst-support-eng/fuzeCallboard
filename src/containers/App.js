@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import classes from "./App.css";
 import StudentAgents from ".././components/StudentAgents/StudentAgents";
-import AdminAgents from ".././components/AdminAgents/AdminAgents";
 import StudentPaused from ".././components/StudentPaused/StudentPaused";
-// import AdminAvailable from ".././components/AdminAvailable/AdminAvailable";
-// import AdminOnCall from ".././components/AdminOnCall/AdminOnCall";
+import AdminAgents from ".././components/AdminAgents/AdminAgents";
 import AdminPaused from ".././components/AdminPaused/AdminPaused";
 require("dotenv").config();
 const axios = require("axios");
@@ -14,9 +12,23 @@ const PASSWORD = process.env.REACT_APP_PASSWORD;
 const ADMIN_QUEUE = process.env.REACT_APP_ADMIN_QUEUE;
 const STUDENT_QUEUE = process.env.REACT_APP_STUDENT_QUEUE;
 
+// class Timer {
+//   constructor(x) {
+//     this.x = x;
+//   }
+//
+//   counter = setInterval(() => {
+//     return this.x++;
+//   }, 1000);
+//
+//   reset = () => {
+//     this.x = 1;
+//   };
+// }
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       agents: [],
       adminQueue: [],
@@ -58,6 +70,7 @@ class App extends Component {
         });
     }, 5000);
   }
+
   getCalls() {
     // get admin queue
     setInterval(() => {
@@ -146,16 +159,37 @@ class App extends Component {
     });
   }
 
-  componentDidMount() {
-    // calls above functions
-    this.getAgents();
-    this.getCalls();
-  }
+  // setStatus() {
+  //   setInterval(() => {
+  //     this.state.agents.forEach(agent => {
+  //       let adminAvailable = [];
+  //       let adminOnCall = [];
+  //       this.state.adminQueue.forEach(admin => {
+  //         if (admin.status === 1 && admin.paused === false) {
+  //           let timer = new Timer(1);
+  //           agent.timer = timer.counter;
+  //           adminAvailable.push(agent);
+  //         }
+  //         if (admin.status === 2 && admin.paused === false) {
+  //           let timer = new Timer(1);
+  //           admin.timer = timer.counter;
+  //           adminOnCall.push(agent);
+  //         }
+  //       });
+  //
+  //       this.setState({
+  //         adminAvailable: adminAvailable,
+  //         adminOnCall: adminOnCall
+  //       });
+  //     });
+  //   });
+  // }
 
   render() {
+    this.getAgents();
+    this.getCalls();
     this.replaceNames();
-    let adminPaused = [];
-    let studentPaused = [];
+
     // status codes
     // 1: "Available";
     // 2: "On a Call";
@@ -196,50 +230,11 @@ class App extends Component {
             <div className="cbstats stats4">
               SLA{" "}
               <div className="queuestats" id="st-call-sla">
-                {this.state.studentSLA}
+                {this.state.studentSLA} %
               </div>
             </div>
             <StudentAgents studentQueue={this.state.studentQueue} />
-            <div className="cbstats stats6 agentcontainer">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Paused Agents:</td>
-                    <td id="st-calls-paused-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                <table className="calls-paused" id="st-calls-paused">
-                  {studentPaused.map(agent => {
-                    return [
-                      <StudentPaused
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
-              </div>
-              <div>
-                <table className="calls-offline" id="st-calls-offline">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <StudentPaused studentQueue={this.state.studentQueue} />
           </div>
         </div>
         <div className="item2">
@@ -267,48 +262,11 @@ class App extends Component {
             <div className="cbstats stats4">
               SLA{" "}
               <div className="queuestats" id="at-call-sla">
-                {this.state.adminSLA}
+                {this.state.adminSLA} %
               </div>
             </div>
             <AdminAgents adminQueue={this.state.adminQueue} />
-            <div className="cbstats stats6 agentcontainer at-calls-paused-tab">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Paused Agents:</td>
-                    <td id="at-calls-paused-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                <table className="calls-paused" id="at-calls-paused">
-                  {adminPaused.map(agent => {
-                    return [
-                      <AdminPaused
-                        name={agent.name}
-                        callsTaken={agent.callsTaken}
-                      />
-                    ];
-                  })}
-                </table>
-              </div>
-              <div>
-                <table className="calls-offline" id="at-calls-offline">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>32</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <AdminPaused adminQueue={this.state.adminQueue} />
           </div>
         </div>
         <div className="item3">

@@ -1,6 +1,5 @@
 import React from "react";
-import AdminOnCall from "./AdminOnCall/AdminOnCall";
-import AdminAvailable from "./AdminAvailable/AdminAvailable";
+import AgentDisplay from ".././AgentDisplay/AgentDisplay";
 
 export default class AdminAgents extends React.Component {
   render() {
@@ -8,10 +7,10 @@ export default class AdminAgents extends React.Component {
     let adminOnCall = [];
 
     this.props.adminQueue.forEach(agent => {
-      if (agent.status === 1) {
+      if (agent.status === 1 && agent.paused === false) {
         adminAvailable.push(agent);
       }
-      if (agent.status === 2) {
+      if (agent.status === 2 && agent.paused === false) {
         adminOnCall.push(agent);
       }
     });
@@ -20,7 +19,7 @@ export default class AdminAgents extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>Available Agents:</td>
+              <td>Available Agents: {adminAvailable.length}</td>
               <td id="at-calls-available-total" />
             </tr>
           </tbody>
@@ -29,10 +28,7 @@ export default class AdminAgents extends React.Component {
           <table className="calls-available" id="at-calls-available">
             {adminAvailable.map(agent => {
               return [
-                <AdminAvailable
-                  name={agent.name}
-                  callsTaken={agent.callsTaken}
-                />
+                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
               ];
             })}
           </table>
@@ -41,7 +37,11 @@ export default class AdminAgents extends React.Component {
           <table className="calls-oncall" id="at-calls-oncall">
             {adminOnCall.map(agent => {
               return [
-                <AdminOnCall name={agent.name} callsTaken={agent.callsTaken} />
+                <AgentDisplay
+                  name={agent.name}
+                  callsTaken={agent.callsTaken}
+                  timer={agent.timer}
+                />
               ];
             })}
           </table>

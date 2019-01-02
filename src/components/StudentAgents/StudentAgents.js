@@ -1,14 +1,12 @@
 import React from "react";
-import StudentOnCall from "./StudentOnCall/StudentOnCall";
-import StudentAvailable from "./StudentAvailable/StudentAvailable";
+import AgentDisplay from ".././AgentDisplay/AgentDisplay";
 
 export default class StudentAgents extends React.Component {
   render() {
     let studentAvailable = [];
     let studentOnCall = [];
-
     this.props.studentQueue.forEach(agent => {
-      if (agent.status === 1) {
+      if (agent.status === 1 && agent.paused === false) {
         studentAvailable.push(agent);
       }
       if (agent.status === 2) {
@@ -20,30 +18,28 @@ export default class StudentAgents extends React.Component {
         <table>
           <tbody>
             <tr>
-              <td>Available Agents:</td>
-              <td id="at-calls-available-total" />
+              <td>Available Agents: {studentAvailable.length}</td>
+              <td id="st-calls-available-total" />
             </tr>
           </tbody>
         </table>
         <div>
-          <table className="calls-available" id="at-calls-available">
+          <table className="calls-available" id="st-calls-available">
             {studentAvailable.map(agent => {
               return [
-                <StudentAvailable
-                  name={agent.name}
-                  callsTaken={agent.callsTaken}
-                />
+                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
               ];
             })}
           </table>
         </div>
         <div>
-          <table className="calls-oncall" id="at-calls-oncall">
+          <table className="calls-oncall" id="st-calls-oncall">
             {studentOnCall.map(agent => {
               return [
-                <StudentOnCall
+                <AgentDisplay
                   name={agent.name}
                   callsTaken={agent.callsTaken}
+                  timer={agent.timer}
                 />
               ];
             })}
