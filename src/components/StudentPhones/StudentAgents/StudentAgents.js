@@ -1,5 +1,5 @@
 import React from "react";
-import AgentDisplay from ".././AgentDisplay/AgentDisplay";
+import AgentDisplay from "../.././AgentDisplay/AgentDisplay";
 
 export default class StudentAgents extends React.Component {
   render() {

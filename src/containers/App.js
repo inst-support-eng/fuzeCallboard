@@ -1,17 +1,8 @@
 import React, { Component } from "react";
 import classes from "./App.css";
-import StudentAgents from ".././components/StudentAgents/StudentAgents";
-import AdminAgents from ".././components/AdminAgents/AdminAgents";
-import StudentPaused from ".././components/StudentPaused/StudentPaused";
-import AdminPaused from ".././components/AdminPaused/AdminPaused";
-import AdminSLA from ".././components/AdminSLA/AdminSLA";
-import StudentSLA from ".././components/StudentSLA/StudentSLA";
-import StudentCallsWaiting from ".././components/StudentCallsWaiting/StudentCallsWaiting";
-import StudentWaitTime from ".././components/StudentWaitTime/StudentWaitTime";
-import StudentCallsCompleted from ".././components/StudentCallsCompleted/StudentCallsCompleted";
-import AdminCallsWaiting from ".././components/AdminCallsWaiting/AdminCallsWaiting";
-import AdminWaitTime from ".././components/AdminWaitTime/AdminWaitTime";
-import AdminCallsCompleted from ".././components/AdminCallsCompleted/AdminCallsCompleted";
+
+import StudentPhones from ".././components/StudentPhones/StudentPhones";
+import AdminPhones from ".././components/AdminPhones/AdminPhones";
 
 require("dotenv").config();
 const axios = require("axios");
@@ -176,38 +167,22 @@ class App extends Component {
 
     return (
       <div className="grid-container">
-        <div className="item1">
-          {" "}
-          <div className="row-title">Student Phones</div>
-          <div className="stats">
-            <StudentCallsWaiting
-              studentCallsWaiting={this.state.studentCallsWaiting}
-            />
-            <StudentWaitTime studentWaitTime={this.state.studentWaitTime} />
-            <StudentCallsCompleted
-              studentCallsCompleted={this.state.studentCallsCompleted}
-            />
-            <StudentSLA studentSLA={this.state.studentSLA} />
-            <StudentAgents studentQueue={this.state.studentQueue} />
-            <StudentPaused studentQueue={this.state.studentQueue} />
-          </div>
-        </div>
-        <div className="item2">
-          {" "}
-          <div className="row-title">Admin Phones</div>
-          <div className="stats">
-            <AdminCallsWaiting
-              adminCallsWaiting={this.state.adminCallsWaiting}
-            />
-            <AdminWaitTime adminWaitTime={this.state.adminWaitTime} />
-            <AdminCallsCompleted
-              adminCallsCompleted={this.state.adminCallsCompleted}
-            />
-            <AdminSLA adminSLA={this.state.adminSLA} />
-            <AdminAgents adminQueue={this.state.adminQueue} />
-            <AdminPaused adminQueue={this.state.adminQueue} />
-          </div>
-        </div>
+        <StudentPhones
+          studentCallsWaiting={this.state.studentCallsWaiting}
+          studentWaitTime={this.state.studentWaitTime}
+          studentCallsCompleted={this.state.studentCallsCompleted}
+          studentSLA={this.state.studentSLA}
+          studentQueue={this.state.studentQueue}
+          studentQueue={this.state.studentQueue}
+        />
+
+        <AdminPhones
+          adminCallsWaiting={this.state.adminCallsWaiting}
+          adminWaitTime={this.state.adminWaitTime}
+          adminCallsCompleted={this.state.adminCallsCompleted}
+          adminSLA={this.state.adminSLA}
+          adminQueue={this.state.adminQueue}
+        />
         <div className="item3">
           {" "}
           <div className="row-title">Student Chats</div>
