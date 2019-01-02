@@ -36,11 +36,7 @@ export default class StudentAgents extends React.Component {
           <table className="calls-oncall" id="st-calls-oncall">
             {studentOnCall.map(agent => {
               return [
-                <AgentDisplay
-                  name={agent.name}
-                  callsTaken={agent.callsTaken}
-                  timer={agent.timer}
-                />
+                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
               ];
             })}
           </table>

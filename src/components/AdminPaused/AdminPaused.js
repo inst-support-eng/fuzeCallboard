@@ -40,11 +40,7 @@ export default class AdminPaused extends React.Component {
           <table className="calls-offline" id="at-calls-offline">
             {adminUnavailable.map(agent => {
               return [
-                <AgentDisplay
-                  name={agent.name}
-                  callsTaken={agent.callsTaken}
-                  timer={agent.timer}
-                />
+                <AgentDisplay name={agent.name} callsTaken={agent.callsTaken} />
               ];
             })}
           </table>
