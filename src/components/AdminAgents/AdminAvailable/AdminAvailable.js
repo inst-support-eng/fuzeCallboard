@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class AgentDisplay extends React.Component {
+export default class AdminAvailable extends React.Component {
   render() {
     return (
       <tbody>

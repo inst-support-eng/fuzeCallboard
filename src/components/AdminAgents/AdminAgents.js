@@ -5,6 +5,7 @@ export default class AdminAgents extends React.Component {
   render() {
     let adminAvailable = [];
     let adminOnCall = [];
+    let adminPaused = [];
 
     this.props.adminQueue.forEach(agent => {
       if (agent.status === 1 && agent.paused === false) {
@@ -19,7 +20,11 @@ export default class AdminAgents extends React.Component {
         <table>
           <tbody>
             <tr>
+<<<<<<< HEAD
               <td>Available Agents: {adminAvailable.length}</td>
+=======
+              <td>Available:</td>
+>>>>>>> 6801c4c196c5d9b8ec2ec1df861a049d2ed1fb08
               <td id="at-calls-available-total" />
             </tr>
           </tbody>

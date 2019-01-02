@@ -207,7 +207,7 @@ class App extends Component {
       <div className="grid-container">
         <div className="item1">
           {" "}
-          Student Phones
+          <div className="row-title">Student Phones</div>
           <div className="stats">
             <div className="cbstats stats1">
               Calls Waiting{" "}
@@ -234,12 +234,55 @@ class App extends Component {
               </div>
             </div>
             <StudentAgents studentQueue={this.state.studentQueue} />
+<<<<<<< HEAD
             <StudentPaused studentQueue={this.state.studentQueue} />
+=======
+            <div className="cbstats stats6 agentcontainer">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Paused:</td>
+                    <td id="st-calls-paused-total" />
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <table className="calls-paused" id="st-calls-paused">
+                  {studentPaused.map(agent => {
+                    return [
+                      <StudentPaused
+                        name={agent.name}
+                        callsTaken={agent.callsTaken}
+                      />
+                    ];
+                  })}
+                </table>
+              </div>
+              <div>
+                <table className="calls-offline" id="st-calls-offline">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+>>>>>>> 6801c4c196c5d9b8ec2ec1df861a049d2ed1fb08
           </div>
         </div>
         <div className="item2">
           {" "}
-          Admin Phones
+          <div className="row-title">Admin Phones</div>
           <div className="stats">
             <div className="cbstats stats1">
               Calls Waiting{" "}
@@ -266,12 +309,53 @@ class App extends Component {
               </div>
             </div>
             <AdminAgents adminQueue={this.state.adminQueue} />
+<<<<<<< HEAD
             <AdminPaused adminQueue={this.state.adminQueue} />
+=======
+            <div className="cbstats stats6 agentcontainer at-calls-paused-tab">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Paused:</td>
+                    <td id="at-calls-paused-total" />
+                  </tr>
+                </tbody>
+              </table>
+              <div>
+                <table className="calls-paused" id="at-calls-paused">
+                    {adminPaused.map(agent => {
+                      return [
+                        <AdminPaused
+                          name={agent.name}
+                          callsTaken={agent.callsTaken}
+                        />
+                      ];
+                    })}
+                </table>
+              </div>
+              <div>
+                <table className="calls-offline" id="at-calls-offline">
+                  <tbody>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                    <tr>
+                      <td>Test Agent</td>
+                      <td>10:15</td>
+                      <td>32</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+>>>>>>> 6801c4c196c5d9b8ec2ec1df861a049d2ed1fb08
           </div>
         </div>
         <div className="item3">
           {" "}
-          Student Chats
+          <div className="row-title">Student Chats</div>
           <div className="stats">
             <div className="cbstats stats1">
               Queued <div className="queuestats" id="at-queuedchats" />
@@ -289,7 +373,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Accepting:</td>
+                    <td>Available:</td>
                     <td id="st-chats-available-total" />
                   </tr>
                 </tbody>
@@ -315,7 +399,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Not Accepting:</td>
+                    <td>Paused:</td>
                     <td id="st-chats-paused-total" />
                   </tr>
                 </tbody>
@@ -341,7 +425,7 @@ class App extends Component {
         </div>
         <div className="item4">
           {" "}
-          Admin Chats
+          <div className="row-title">Admin Chats</div>
           <div className="stats">
             <div className="cbstats stats1">
               Queued <div className="queuestats" id="st-queuedchats" />
@@ -359,7 +443,7 @@ class App extends Component {
               <table>
                 <tbody>
                   <tr>
-                    <td>Paused:</td>
+                    <td>Available:</td>
                     <td id="at-chats-available-total" />
                   </tr>
                 </tbody>
