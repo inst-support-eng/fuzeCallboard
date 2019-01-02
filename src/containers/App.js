@@ -4,6 +4,15 @@ import StudentAgents from ".././components/StudentAgents/StudentAgents";
 import AdminAgents from ".././components/AdminAgents/AdminAgents";
 import StudentPaused from ".././components/StudentPaused/StudentPaused";
 import AdminPaused from ".././components/AdminPaused/AdminPaused";
+import AdminSLA from ".././components/AdminSLA/AdminSLA";
+import StudentSLA from ".././components/StudentSLA/StudentSLA";
+import StudentCallsWaiting from ".././components/StudentCallsWaiting/StudentCallsWaiting";
+import StudentWaitTime from ".././components/StudentWaitTime/StudentWaitTime";
+import StudentCallsCompleted from ".././components/StudentCallsCompleted/StudentCallsCompleted";
+import AdminCallsWaiting from ".././components/AdminCallsWaiting/AdminCallsWaiting";
+import AdminWaitTime from ".././components/AdminWaitTime/AdminWaitTime";
+import AdminCallsCompleted from ".././components/AdminCallsCompleted/AdminCallsCompleted";
+
 require("dotenv").config();
 const axios = require("axios");
 const API_TOKEN = process.env.REACT_APP_API_TOKEN;
@@ -171,30 +180,14 @@ class App extends Component {
           {" "}
           <div className="row-title">Student Phones</div>
           <div className="stats">
-            <div className="cbstats stats1">
-              Calls Waiting{" "}
-              <div className="queuestats" id="st-callswaiting">
-                {this.state.studentCallsWaiting}
-              </div>
-            </div>
-            <div className="cbstats stats2">
-              Wait Time{" "}
-              <div className="queuestats" id="st-call-waittime">
-                {this.state.studentWaitTime}
-              </div>
-            </div>
-            <div className="cbstats stats3">
-              Completed{" "}
-              <div className="queuestats" id="st-calls-completed">
-                {this.state.studentCallsCompleted}
-              </div>
-            </div>
-            <div className="cbstats stats4">
-              SLA{" "}
-              <div className="queuestats" id="st-call-sla">
-                {this.state.studentSLA}%
-              </div>
-            </div>
+            <StudentCallsWaiting
+              studentCallsWaiting={this.state.studentCallsWaiting}
+            />
+            <StudentWaitTime studentWaitTime={this.state.studentWaitTime} />
+            <StudentCallsCompleted
+              studentCallsCompleted={this.state.studentCallsCompleted}
+            />
+            <StudentSLA studentSLA={this.state.studentSLA} />
             <StudentAgents studentQueue={this.state.studentQueue} />
             <StudentPaused studentQueue={this.state.studentQueue} />
           </div>
@@ -203,30 +196,14 @@ class App extends Component {
           {" "}
           <div className="row-title">Admin Phones</div>
           <div className="stats">
-            <div className="cbstats stats1">
-              Calls Waiting{" "}
-              <div className="queuestats" id="at-callswaiting">
-                {this.state.adminCallsWaiting}
-              </div>
-            </div>
-            <div className="cbstats stats2">
-              Wait Time{" "}
-              <div className="queuestats" id="at-call-waittime">
-                {this.state.adminWaitTime}
-              </div>
-            </div>
-            <div className="cbstats stats3">
-              Completed{" "}
-              <div className="queuestats" id="at-calls-completed">
-                {this.state.adminCallsCompleted}
-              </div>
-            </div>
-            <div className="cbstats stats4">
-              SLA{" "}
-              <div className="queuestats" id="at-call-sla">
-                {this.state.adminSLA}%
-              </div>
-            </div>
+            <AdminCallsWaiting
+              adminCallsWaiting={this.state.adminCallsWaiting}
+            />
+            <AdminWaitTime adminWaitTime={this.state.adminWaitTime} />
+            <AdminCallsCompleted
+              adminCallsCompleted={this.state.adminCallsCompleted}
+            />
+            <AdminSLA adminSLA={this.state.adminSLA} />
             <AdminAgents adminQueue={this.state.adminQueue} />
             <AdminPaused adminQueue={this.state.adminQueue} />
           </div>
