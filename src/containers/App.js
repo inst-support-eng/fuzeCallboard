@@ -223,7 +223,7 @@ class App extends Component {
         />
         <div className="item3">
           {" "}
-          <div className="row-title">Student Chats</div>
+          <div className="row-title">Chats</div>
           <div className="stats">
             <div className="cbstats stats1">
               Queued <div className="queuestats" id="at-queuedchats" />
@@ -237,7 +237,7 @@ class App extends Component {
             <div className="cbstats stats4">
               SLA <div className="queuestats" id="at-chat-sla" />
             </div>
-            <div className="cbstats stats5 agentcontainer-chats">
+            <div className="cbstats stats5 agentcontainer">
               <table>
                 <tbody>
                   <tr>
@@ -263,7 +263,7 @@ class App extends Component {
                 </table>
               </div>
             </div>
-            <div className="cbstats stats6 agentcontainer-chats">
+            <div className="cbstats stats6 agentcontainer">
               <table>
                 <tbody>
                   <tr>
@@ -284,76 +284,6 @@ class App extends Component {
                       <td>Test Agent</td>
                       <td>10:15</td>
                       <td>32</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="item4">
-          {" "}
-          <div className="row-title">Admin Chats</div>
-          <div className="stats">
-            <div className="cbstats stats1">
-              Queued <div className="queuestats" id="st-queuedchats" />
-            </div>
-            <div className="cbstats stats2">
-              Wait Time <div className="queuestats" id="st-chat-waittime" />
-            </div>
-            <div className="cbstats stats3">
-              Active Chats <div className="queuestats" id="st-activechats" />
-            </div>
-            <div className="cbstats stats4">
-              SLA <div className="queuestats" id="st-chat-sla" />
-            </div>
-            <div className="cbstats stats5 agentcontainer-chats">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Available:</td>
-                    <td id="at-chats-available-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                <table className="chats-active" id="at-chats-available">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>3/4</td>
-                    </tr>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>3/4</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <div className="cbstats stats6 agentcontainer-chats">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Paused:</td>
-                    <td id="at-chats-paused-total" />
-                  </tr>
-                </tbody>
-              </table>
-              <div>
-                <table className="chats-paused" id="at-chats-paused">
-                  <tbody>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>3/4</td>
-                    </tr>
-                    <tr>
-                      <td>Test Agent</td>
-                      <td>10:15</td>
-                      <td>3/4</td>
                     </tr>
                   </tbody>
                 </table>

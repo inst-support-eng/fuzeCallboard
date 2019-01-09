@@ -13,8 +13,8 @@ body {
   width: 97vw;
   display: grid;
   grid-template-areas:
-    "left center top-right"
-    "left center bottom-right";
+    "left center right"
+    "left center right";
   grid-column-gap: 1vw;
   text-align: center;
 }
@@ -41,17 +41,9 @@ body {
   overflow: hidden;
   font-size: 2.5vh;
 }
-.agentcontainer-chats {
-  text-align: left;
-  height: 35vh;
-  padding: 0 0.25vh 0 0.25vh;
-  overflow: hidden;
-  font-size: 2.5vh;
-}
 .item1 {grid-area: left;}
 .item2 {grid-area: center;}
-.item3 {grid-area: top-right;}
-.item4 {grid-area: bottom-right;}
+.item3 {grid-area: right;}
 .stats1 {grid-area: one;}
 .stats2 {grid-area: two;}
 .stats3 {grid-area: three;}
