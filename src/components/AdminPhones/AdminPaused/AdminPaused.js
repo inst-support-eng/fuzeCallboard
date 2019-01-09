@@ -7,10 +7,10 @@ export default class AdminPaused extends React.Component {
     let adminUnavailable = [];
 
     this.props.adminQueue.forEach(agent => {
-      if (agent.paused === true && agent.status !== 5) {
+      if (agent.status === "Paused") {
         adminPaused.push(agent);
       }
-      if (agent.status === 5) {
+      if (agent.status === "Unavailable") {
         adminUnavailable.push(agent);
       }
     });
@@ -31,9 +31,9 @@ export default class AdminPaused extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}
@@ -45,9 +45,9 @@ export default class AdminPaused extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}

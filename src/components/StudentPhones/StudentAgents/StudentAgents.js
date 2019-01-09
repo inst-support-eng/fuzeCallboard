@@ -6,10 +6,10 @@ export default class StudentAgents extends React.Component {
     let studentAvailable = [];
     let studentOnCall = [];
     this.props.studentQueue.forEach(agent => {
-      if (agent.status === 1 && agent.paused === false) {
+      if (agent.status === "Available") {
         studentAvailable.push(agent);
       }
-      if (agent.status === 2) {
+      if (agent.status === "On a Call") {
         studentOnCall.push(agent);
       }
     });
@@ -29,9 +29,9 @@ export default class StudentAgents extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}
@@ -43,9 +43,9 @@ export default class StudentAgents extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}

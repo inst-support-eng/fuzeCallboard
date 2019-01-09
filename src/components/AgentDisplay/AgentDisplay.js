@@ -6,7 +6,7 @@ export default class AgentDisplay extends React.Component {
       <tbody>
         <tr>
           <td>{this.props.name}</td>
-          <td>{this.props.timer}</td>
+          <td>{this.props.counter}</td>
           <td align="right">{this.props.callsTaken}</td>
         </tr>
       </tbody>

@@ -7,13 +7,14 @@ export default class AdminAgents extends React.Component {
     let adminOnCall = [];
 
     this.props.adminQueue.forEach(agent => {
-      if (agent.status === 1 && agent.paused === false) {
+      if (agent.status === "Available") {
         adminAvailable.push(agent);
       }
-      if (agent.status === 2 && agent.paused === false) {
+      if (agent.status === "On a Call") {
         adminOnCall.push(agent);
       }
     });
+
     return (
       <div className="cbstats stats5 agentcontainer">
         <table>
@@ -30,9 +31,9 @@ export default class AdminAgents extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}
@@ -44,9 +45,9 @@ export default class AdminAgents extends React.Component {
               return [
                 <AgentDisplay
                   key={agent.name}
-                  name={agent.name}
+                  name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  timer={agent.timer}
+                  counter={agent.counter}
                 />
               ];
             })}

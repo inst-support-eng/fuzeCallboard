@@ -56,6 +56,7 @@ class App extends Component {
         });
     }, 5000);
   }
+
   getCalls() {
     // get admin queue
     setInterval(() => {
@@ -77,6 +78,8 @@ class App extends Component {
           for (let i = 0; i < temp.length; i++) {
             let name = temp[i].name.substring(4);
             temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            temp[i].counter = this.timer(temp[i]);
           }
           this.setState({
             adminQueue: temp,
@@ -111,6 +114,8 @@ class App extends Component {
           for (let i = 0; i < temp.length; i++) {
             let name = temp[i].name.substring(4);
             temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            temp[i].counter = this.timer(temp[i]);
           }
           this.setState({
             studentQueue: temp,
@@ -132,26 +137,36 @@ class App extends Component {
       this.state.adminQueue.forEach(admin => {
         let name2 = admin.name;
         if (name === name2) {
-          admin.name = toChange;
+          return (admin.agentName = toChange);
         }
       });
       this.state.studentQueue.forEach(student => {
         let name2 = student.name;
         if (name === name2) {
-          student.name = toChange;
+          return (student.agentName = toChange);
         }
       });
     });
   }
 
-  componentDidMount() {
-    // calls above functions
-    this.getAgents();
-    this.getCalls();
+  timer(agent) {
+    let counter = 1;
+    this.state.adminQueue.forEach(admin => {
+      if (agent.name === admin.name && agent.status == admin.status) {
+        counter = admin.counter++;
+      }
+    });
+
+    this.state.studentQueue.forEach(student => {
+      if (agent.name === student.name && agent.status !== student.status) {
+        counter = student.counter++;
+      }
+    });
+
+    return counter;
   }
 
-  render() {
-    this.replaceNames();
+  getStatus(agent) {
     // status codes
     // 1: "Available";
     // 2: "On a Call";
@@ -164,6 +179,30 @@ class App extends Component {
 
     // paused status comes from paused param
     // paused param is a boolean
+
+    if (agent.status === 1 && agent.paused === false) {
+      return (agent.status = "Available");
+    }
+    if (agent.status === 2 && agent.paused === false) {
+      return (agent.status = "On a Call");
+    }
+
+    if (agent.paused === true && agent.status !== 5) {
+      return (agent.status = "Paused");
+    }
+    if (agent.status === 5) {
+      return (agent.status = "Unavailable");
+    }
+  }
+
+  componentDidMount() {
+    // calls above functions
+    this.getAgents();
+    this.getCalls();
+  }
+
+  render() {
+    this.replaceNames();
 
     return (
       <div className="grid-container">
