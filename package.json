@@ -23,5 +23,17 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "description": "#### install react",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BlinkVonDoom/fuzeCallboard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BlinkVonDoom/fuzeCallboard/issues"
+  },
+  "homepage": "https://github.com/BlinkVonDoom/fuzeCallboard#readme"
 }

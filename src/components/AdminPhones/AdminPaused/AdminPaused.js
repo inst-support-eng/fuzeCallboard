@@ -33,7 +33,6 @@ export default class AdminPaused extends React.Component {
                   key={agent.name}
                   name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  counter={agent.counter}
                 />
               ];
             })}
@@ -47,7 +46,6 @@ export default class AdminPaused extends React.Component {
                   key={agent.name}
                   name={agent.agentName}
                   callsTaken={agent.callsTaken}
-                  counter={agent.counter}
                 />
               ];
             })}

@@ -8,16 +8,12 @@ install npm <br>
 install react <br>
 `npm install react`
 
-#### create new directory
-
-in terminal
-`mkdir 'project_name'` replace 'project_name' with whatever you want <br>
-navigate to new directory with `cd project_name`
-
 #### download code and create git
 
 `git init` <br>
 `git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
+navigate to fuzeCallboard with `cd fuzeCallboard`
+run `npm install` to install required dependencies
 
 ### `npm start`
 

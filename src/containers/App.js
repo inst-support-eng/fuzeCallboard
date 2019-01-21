@@ -79,7 +79,6 @@ class App extends Component {
             let name = temp[i].name.substring(4);
             temp[i].name = name;
             temp[i].status = this.getStatus(temp[i]);
-            temp[i].counter = this.timer(temp[i]);
           }
           this.setState({
             adminQueue: temp,
@@ -115,7 +114,6 @@ class App extends Component {
             let name = temp[i].name.substring(4);
             temp[i].name = name;
             temp[i].status = this.getStatus(temp[i]);
-            temp[i].counter = this.timer(temp[i]);
           }
           this.setState({
             studentQueue: temp,
@@ -147,23 +145,6 @@ class App extends Component {
         }
       });
     });
-  }
-
-  timer(agent) {
-    let counter = 1;
-    this.state.adminQueue.forEach(admin => {
-      if (agent.name === admin.name && agent.status == admin.status) {
-        counter = admin.counter++;
-      }
-    });
-
-    this.state.studentQueue.forEach(student => {
-      if (agent.name === student.name && agent.status !== student.status) {
-        counter = student.counter++;
-      }
-    });
-
-    return counter;
   }
 
   getStatus(agent) {
