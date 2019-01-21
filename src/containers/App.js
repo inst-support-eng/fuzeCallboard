@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import classes from "./App.css";
+import "./App.css";
 
 import StudentPhones from ".././components/StudentPhones/StudentPhones";
 import AdminPhones from ".././components/AdminPhones/AdminPhones";
@@ -35,96 +35,92 @@ class App extends Component {
   }
 
   getAgents() {
-    setInterval(() => {
-      axios
-        .get("https://rest.data.fuze.com/agentEvents", {
-          headers: {
-            Accept: "application/json",
-            Authorization: API_TOKEN
-          },
-          params: {
-            limit: 1000
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(res => {
-          const response = res.data;
-          let agents = response.agentEvents;
-          this.setState({ agents: agents });
-        });
-    }, 5000);
+    axios
+      .get("https://rest.data.fuze.com/agentEvents", {
+        headers: {
+          Accept: "application/json",
+          Authorization: API_TOKEN
+        },
+        params: {
+          limit: 1000
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(res => {
+        const response = res.data;
+        let agents = response.agentEvents;
+        this.setState({ agents: agents });
+      });
   }
 
   getCalls() {
     // get admin queue
-    setInterval(() => {
-      let url =
-        "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
-      axios
-        .get(url.replace("$QUEUE", ADMIN_QUEUE), {
-          headers: {
-            username: USERNAME,
-            password: PASSWORD
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(res => {
-          const response = res.data;
-          let temp = response.members;
-          for (let i = 0; i < temp.length; i++) {
-            let name = temp[i].name.substring(4);
-            temp[i].name = name;
-            temp[i].status = this.getStatus(temp[i]);
-          }
-          this.setState({
-            adminQueue: temp,
-            adminCallsWaiting: response.callsWaiting,
-            adminWaitTime: response.maxWaiting,
-            adminCallsCompleted: response.numCompleted,
-            adminCallsAbandoned: response.numAbandoned,
-            adminSLA: response.serviceLevelPerf
-          });
+    let url =
+      "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
+    axios
+      .get(url.replace("$QUEUE", ADMIN_QUEUE), {
+        headers: {
+          username: USERNAME,
+          password: PASSWORD
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(res => {
+        const response = res.data;
+        let temp = response.members;
+        for (let i = 0; i < temp.length; i++) {
+          let name = temp[i].name.substring(4);
+          temp[i].name = name;
+          temp[i].status = this.getStatus(temp[i]);
+        }
+        this.setState({
+          adminQueue: temp,
+          adminCallsWaiting: response.callsWaiting,
+          adminWaitTime: response.maxWaiting,
+          adminCallsCompleted: response.numCompleted,
+          adminCallsAbandoned: response.numAbandoned,
+          adminSLA: response.serviceLevelPerf
         });
+      });
 
-      // get student queue
-      axios
-        .get(url.replace("$QUEUE", STUDENT_QUEUE), {
-          headers: {
-            username: USERNAME,
-            password: PASSWORD
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .then(res => {
-          const response = res.data;
-          let callsWaiting = response.callsWaiting;
-          let waitTime = response.maxWaiting;
-          let callsCompleted = response.numCompleted;
-          let callsAbandoned = response.numAbandoned;
-          let sla = response.serviceLevelPerf;
+    // get student queue
+    axios
+      .get(url.replace("$QUEUE", STUDENT_QUEUE), {
+        headers: {
+          username: USERNAME,
+          password: PASSWORD
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(res => {
+        const response = res.data;
+        let callsWaiting = response.callsWaiting;
+        let waitTime = response.maxWaiting;
+        let callsCompleted = response.numCompleted;
+        let callsAbandoned = response.numAbandoned;
+        let sla = response.serviceLevelPerf;
 
-          let temp = response.members;
-          for (let i = 0; i < temp.length; i++) {
-            let name = temp[i].name.substring(4);
-            temp[i].name = name;
-            temp[i].status = this.getStatus(temp[i]);
-          }
-          this.setState({
-            studentQueue: temp,
-            studentCallsWaiting: callsWaiting,
-            studentWaitTime: waitTime,
-            studentCallsCompleted: callsCompleted,
-            studentCallsAbandoned: callsAbandoned,
-            studentSLA: sla
-          });
+        let temp = response.members;
+        for (let i = 0; i < temp.length; i++) {
+          let name = temp[i].name.substring(4);
+          temp[i].name = name;
+          temp[i].status = this.getStatus(temp[i]);
+        }
+        this.setState({
+          studentQueue: temp,
+          studentCallsWaiting: callsWaiting,
+          studentWaitTime: waitTime,
+          studentCallsCompleted: callsCompleted,
+          studentCallsAbandoned: callsAbandoned,
+          studentSLA: sla
         });
-    }, 5000);
+      });
   }
 
   replaceNames() {
