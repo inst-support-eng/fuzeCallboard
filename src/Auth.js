@@ -4,7 +4,6 @@ import history from "./History";
 require("dotenv").config();
 const DOMAIN = process.env.React_APP_AUTH0_DOMAIN;
 const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
-const CLIENT_SECRET = process.env.REACT_APP_AUTH0_CLIENT_SECRET;
 const PROD_URL = process.env.REACT_APP_PROD_URL;
 
 export default class Auth {
