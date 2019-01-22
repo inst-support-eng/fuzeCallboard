@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import App from "./containers/App";
+import App from "./App";
 
 class Home extends Component {
   // calls the login method in authentication service
