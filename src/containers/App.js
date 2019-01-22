@@ -182,8 +182,8 @@ class App extends Component {
 
   componentDidMount() {
     // calls above functions
-    this.getAgents();
-    this.getCalls();
+    setInterval(() => this.getAgents(), 1000);
+    setInterval(() => this.getCalls(), 1000);
   }
 
   render() {

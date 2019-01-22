@@ -13,7 +13,10 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: DOMAIN,
     clientID: CLIENT_ID,
-    redirectUri: PROD_URL + "/callback",
+    redirectUri:
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/callback"
+        : PROD_URL + "/callback",
     //audience: "https://fuze-callboard.auth0.com/userinfo",
     responseType: "token id_token",
     scope: "openid"
