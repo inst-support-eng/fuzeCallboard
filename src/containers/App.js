@@ -79,6 +79,11 @@ class App extends Component {
           let name = temp[i].name.substring(4);
           temp[i].name = name;
           temp[i].status = this.getStatus(temp[i]);
+          // calucate agent's time in current state
+          let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp 
+          let currentTime = Math.round((new Date()).getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000` 
+          let difference = currentTime - lastCall;
+          temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
         }
         this.setState({
           adminQueue: temp,
@@ -105,12 +110,16 @@ class App extends Component {
         const response = res.data;
 
         let temp = response.members;
-
         for (let i = 0; i < temp.length; i++) {
           // take respose and members array, and remove needless characters from name string
           let name = temp[i].name.substring(4);
           temp[i].name = name;
           temp[i].status = this.getStatus(temp[i]);
+          // calucate agent's time in current state
+          let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp 
+          let currentTime = Math.round((new Date()).getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000` 
+          let difference = currentTime - lastCall;
+          temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
         }
         this.setState({
           studentQueue: temp,
@@ -179,6 +188,22 @@ class App extends Component {
       return (agent.status = "Unavailable");
     }
   }
+
+  ppSeconds(time) {
+    let hours = Math.floor(time / 3600);
+    time %= 3600;
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    if (seconds < 10) {seconds = "0"+seconds;}
+    if (hours == 0 && minutes == 0) {
+      return seconds
+    } else if (hours == 0) {
+      return minutes + ":" + seconds
+    } else {
+      return hours + ":" + minutes + ":" + seconds
+    }
+}
+
 
   componentDidMount() {
     // calls above functions
