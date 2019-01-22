@@ -4,17 +4,19 @@ import history from "./History";
 require("dotenv").config();
 const DOMAIN = process.env.React_APP_AUTH0_DOMAIN;
 const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
+const CLIENT_SECRET = process.env.REACT_APP_AUTH0_CLIENT_SECRET;
 const PROD_URL = process.env.REACT_APP_PROD_URL;
 
 export default class Auth {
   // Please use your own credentials here
+
   auth0 = new auth0.WebAuth({
     domain: DOMAIN,
     clientID: CLIENT_ID,
     redirectUri:
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/callback"
-        : PROD_URL + "/reactivesearch-auth0-example/callback",
+      process.env.NODE_ENV === "webtask"
+        ? PROD_URL + "/reactivesearch-auth0-example/callback"
+        : "http://localhost:3000/callback",
     audience: "https://fuze-callboard.auth0.com/userinfo",
     responseType: "token id_token",
     scope: "openid"
