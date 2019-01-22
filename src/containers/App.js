@@ -41,7 +41,7 @@ class App extends Component {
       params: { limit: 1000 }
     });
 
-    const response = res.data;
+    const response = await res.data;
     let agents = response.agentEvents;
     this.setState({ agents: agents });
   }
@@ -56,7 +56,7 @@ class App extends Component {
     });
 
     // take respose and members array, and remove needless characters from name string
-    const response = res.data;
+    const response = await res.data;
     let temp = response.members;
     temp.forEach(agent => {
       let name = agent.name.substring(4);
@@ -81,7 +81,7 @@ class App extends Component {
       headers: { username: USERNAME, password: PASSWORD }
     });
 
-    const response = res.data;
+    const response = await res.data;
     let temp = response.members;
     temp.forEach(agent => {
       let name = agent.name.substring(4);
@@ -155,11 +155,14 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // calls above functions
-    setInterval(() => this.getAgents(), 1000);
-    setInterval(() => this.getAdminCalls(), 1000);
-    setInterval(() => this.getStudentCalls(), 1000);
+    const makeCalls = async () => {
+      await this.getAdminCalls();
+      await this.getStudentCalls();
+      await this.getAgents();
+    };
+    setInterval(() => makeCalls(), 5000);
   }
 
   render() {
