@@ -14,7 +14,7 @@ export default class Auth {
     domain: DOMAIN,
     clientID: CLIENT_ID,
     redirectUri: PROD_URL + "/callback",
-    audience: "https://fuze-callboard.auth0.com/userinfo",
+    //audience: "https://fuze-callboard.auth0.com/userinfo",
     responseType: "token id_token",
     scope: "openid"
   });
