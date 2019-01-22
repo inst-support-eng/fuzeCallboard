@@ -35,92 +35,67 @@ class App extends Component {
   }
 
   // get agent nice name data from fuze
-  getAgents() {
-    axios
-      .get("https://rest.data.fuze.com/agentEvents", {
-        headers: {
-          Accept: "application/json",
-          Authorization: API_TOKEN
-        },
-        params: {
-          limit: 1000
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(res => {
-        const response = res.data;
-        let agents = response.agentEvents;
-        this.setState({ agents: agents });
-      });
+  async getAgents() {
+    const res = await axios.get("https://rest.data.fuze.com/agentEvents", {
+      headers: { Accept: "application/json", Authorization: API_TOKEN },
+      params: { limit: 1000 }
+    });
+
+    const response = res.data;
+    let agents = response.agentEvents;
+    this.setState({ agents: agents });
   }
 
   // get calls for admin and student queue from fuze
-  getCalls() {
+  async getAdminCalls() {
     // get admin queue
     let url =
       "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
-    axios
-      .get(url.replace("$QUEUE", ADMIN_QUEUE), {
-        headers: {
-          username: USERNAME,
-          password: PASSWORD
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(res => {
-        // take respose and members array, and remove needless characters from name string
-        const response = res.data;
-        let temp = response.members;
-        for (let i = 0; i < temp.length; i++) {
-          let name = temp[i].name.substring(4);
-          temp[i].name = name;
-          temp[i].status = this.getStatus(temp[i]);
-        }
-        this.setState({
-          adminQueue: temp,
-          adminCallsWaiting: response.callsWaiting,
-          adminWaitTime: response.maxWaiting,
-          adminCallsCompleted: response.numCompleted,
-          adminCallsAbandoned: response.numAbandoned,
-          adminSLA: response.serviceLevelPerf
-        });
-      });
+    const res = await axios.get(url.replace("$QUEUE", ADMIN_QUEUE), {
+      headers: { username: USERNAME, password: PASSWORD }
+    });
 
-    // get student queue
-    axios
-      .get(url.replace("$QUEUE", STUDENT_QUEUE), {
-        headers: {
-          username: USERNAME,
-          password: PASSWORD
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(res => {
-        const response = res.data;
+    // take respose and members array, and remove needless characters from name string
+    const response = res.data;
+    let temp = response.members;
+    temp.forEach(agent => {
+      let name = agent.name.substring(4);
+      agent.name = name;
+      agent.status = this.getStatus(agent);
+    });
+    this.setState({
+      adminQueue: temp,
+      adminCallsWaiting: response.callsWaiting,
+      adminWaitTime: response.maxWaiting,
+      adminCallsCompleted: response.numCompleted,
+      adminCallsAbandoned: response.numAbandoned,
+      adminSLA: response.serviceLevelPerf
+    });
+  }
 
-        let temp = response.members;
+  // get student queue
+  async getStudentCalls() {
+    let url =
+      "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
+    const res = await axios.get(url.replace("$QUEUE", STUDENT_QUEUE), {
+      headers: { username: USERNAME, password: PASSWORD }
+    });
 
-        for (let i = 0; i < temp.length; i++) {
-          // take respose and members array, and remove needless characters from name string
-          let name = temp[i].name.substring(4);
-          temp[i].name = name;
-          temp[i].status = this.getStatus(temp[i]);
-        }
-        this.setState({
-          studentQueue: temp,
-          studentCallsWaiting: response.callsWaiting,
-          studentWaitTime: response.maxWaiting,
-          studentCallsCompleted: response.numCompleted,
-          studentCallsAbandoned: response.numAbandoned,
-          studentSLA: response.serviceLevelPerf
-        });
-      });
+    const response = res.data;
+    let temp = response.members;
+    temp.forEach(agent => {
+      let name = agent.name.substring(4);
+      agent.name = name;
+      agent.status = this.getStatus(agent);
+    });
+    this.setState({
+      studentQueue: temp,
+      studentCallsWaiting: response.callsWaiting,
+      studentWaitTime: response.maxWaiting,
+      studentCallsCompleted: response.numCompleted,
+      studentCallsAbandoned: response.numAbandoned,
+      studentSLA: response.serviceLevelPerf
+    });
   }
 
   replaceNames() {
@@ -183,7 +158,8 @@ class App extends Component {
   componentDidMount() {
     // calls above functions
     setInterval(() => this.getAgents(), 1000);
-    setInterval(() => this.getCalls(), 1000);
+    setInterval(() => this.getAdminCalls(), 1000);
+    setInterval(() => this.getStudentCalls(), 1000);
   }
 
   render() {

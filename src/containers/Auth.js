@@ -4,7 +4,6 @@ import history from "./History";
 require("dotenv").config();
 const DOMAIN = process.env.React_APP_AUTH0_DOMAIN;
 const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
-const CLIENT_SECRET = process.env.REACT_APP_AUTH0_CLIENT_SECRET;
 const PROD_URL = process.env.REACT_APP_PROD_URL;
 
 export default class Auth {
@@ -13,6 +12,7 @@ export default class Auth {
   auth0 = new auth0.WebAuth({
     domain: DOMAIN,
     clientID: CLIENT_ID,
+    //redirectUri: "http://localhost:3000",
     redirectUri: PROD_URL + "/callback",
     //audience: "https://fuze-callboard.auth0.com/userinfo",
     responseType: "token id_token",
