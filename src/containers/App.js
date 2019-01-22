@@ -126,7 +126,7 @@ class App extends Component {
   replaceNames() {
     // replaces names from admin/ student q with less crap ones
     this.state.agents.forEach(agent => {
-      let name = agent.peerName;
+      let peerName = agent.peerName;
       let toChange = "";
       if (agent.userId.includes(".instru")) {
         toChange = agent.userId.replace(".instru", "");
@@ -137,14 +137,14 @@ class App extends Component {
       }
 
       this.state.adminQueue.forEach(admin => {
-        let name2 = admin.name;
-        if (name === name2) {
+        let agentName = admin.name;
+        if (peerName === agentName) {
           return (admin.agentName = toChange);
         }
       });
       this.state.studentQueue.forEach(student => {
-        let name2 = student.name;
-        if (name === name2) {
+        let agentName = student.name;
+        if (peerName === agentName) {
           return (student.agentName = toChange);
         }
       });
