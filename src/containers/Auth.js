@@ -15,7 +15,7 @@ export default class Auth {
     clientID: CLIENT_ID,
     redirectUri:
       process.env.NODE_ENV === "webtask"
-        ? PROD_URL + "/reactivesearch-auth0-example/callback"
+        ? PROD_URL + "/callback"
         : "http://localhost:3000/callback",
     audience: "https://fuze-callboard.auth0.com/userinfo",
     responseType: "token id_token",
