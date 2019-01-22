@@ -105,6 +105,7 @@ class App extends Component {
         const response = res.data;
 
         let temp = response.members;
+
         for (let i = 0; i < temp.length; i++) {
           // take respose and members array, and remove needless characters from name string
           let name = temp[i].name.substring(4);
@@ -126,7 +127,15 @@ class App extends Component {
     // replaces names from admin/ student q with less crap ones
     this.state.agents.forEach(agent => {
       let name = agent.peerName;
-      let toChange = agent.userId.replace(".instru", "");
+      let toChange = "";
+      if (agent.userId.includes(".instru")) {
+        toChange = agent.userId.replace(".instru", "");
+      } else if (agent.userId.includes("@instructure")) {
+        toChange = agent.userId.replace("@instructure.com", "");
+      } else {
+        toChange = agent.userId;
+      }
+
       this.state.adminQueue.forEach(admin => {
         let name2 = admin.name;
         if (name === name2) {
