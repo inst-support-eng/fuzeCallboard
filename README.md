@@ -11,8 +11,8 @@ install react <br>
 #### download code and create git
 
 `git init` <br>
-`git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
-navigate to fuzeCallboard with `cd fuzeCallboard`
+`git clone https://github.com/BlinkVonDoom/fuzeCallboard.git` <br>
+navigate to fuzeCallboard with `cd fuzeCallboard` <br>
 run `npm install` to install required dependencies
 
 ### `npm start`

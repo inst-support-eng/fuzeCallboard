@@ -34,6 +34,7 @@ class App extends Component {
     };
   }
 
+  // get agent nice name data from fuze
   getAgents() {
     axios
       .get("https://rest.data.fuze.com/agentEvents", {
@@ -55,6 +56,7 @@ class App extends Component {
       });
   }
 
+  // get calls for admin and student queue from fuze
   getCalls() {
     // get admin queue
     let url =
@@ -70,6 +72,7 @@ class App extends Component {
         console.log(err);
       })
       .then(res => {
+        // take respose and members array, and remove needless characters from name string
         const response = res.data;
         let temp = response.members;
         for (let i = 0; i < temp.length; i++) {
@@ -100,25 +103,21 @@ class App extends Component {
       })
       .then(res => {
         const response = res.data;
-        let callsWaiting = response.callsWaiting;
-        let waitTime = response.maxWaiting;
-        let callsCompleted = response.numCompleted;
-        let callsAbandoned = response.numAbandoned;
-        let sla = response.serviceLevelPerf;
 
         let temp = response.members;
         for (let i = 0; i < temp.length; i++) {
+          // take respose and members array, and remove needless characters from name string
           let name = temp[i].name.substring(4);
           temp[i].name = name;
           temp[i].status = this.getStatus(temp[i]);
         }
         this.setState({
           studentQueue: temp,
-          studentCallsWaiting: callsWaiting,
-          studentWaitTime: waitTime,
-          studentCallsCompleted: callsCompleted,
-          studentCallsAbandoned: callsAbandoned,
-          studentSLA: sla
+          studentCallsWaiting: response.callsWaiting,
+          studentWaitTime: response.maxWaiting,
+          studentCallsCompleted: response.numCompleted,
+          studentCallsAbandoned: response.numAbandoned,
+          studentSLA: response.serviceLevelPerf
         });
       });
   }
