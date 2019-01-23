@@ -35,67 +35,104 @@ class App extends Component {
   }
 
   // get agent nice name data from fuze
-  async getAgents() {
-    const res = await axios.get("https://rest.data.fuze.com/agentEvents", {
-      headers: { Accept: "application/json", Authorization: API_TOKEN },
-      params: { limit: 1000 }
-    });
-
-    const response = await res.data;
-    let agents = response.agentEvents;
-    this.setState({ agents: agents });
+  getAgents() {
+    axios
+      .get("https://rest.data.fuze.com/agentEvents", {
+        headers: {
+          Accept: "application/json",
+          Authorization: API_TOKEN
+        },
+        params: {
+          limit: 1000
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .then(res => {
+        const response = res.data;
+        let agents = response.agentEvents;
+        this.setState({ agents: agents });
+      });
   }
 
   // get calls for admin and student queue from fuze
-  async getAdminCalls() {
+  
+getCalls() {
     // get admin queue
-    let url =
-      "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
-    const res = await axios.get(url.replace("$QUEUE", ADMIN_QUEUE), {
-      headers: { username: USERNAME, password: PASSWORD }
-    });
+    setInterval(() => {
+      let url =
+        "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
+      axios
+        .get(url.replace("$QUEUE", ADMIN_QUEUE), {
+          headers: {
+            username: USERNAME,
+            password: PASSWORD
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(res => {
+          // take respose and members array, and remove needless characters from name string
+          const response = res.data;
+          let temp = response.members;
+          for (let i = 0; i < temp.length; i++) {
+            let name = temp[i].name.substring(4);
+            temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            // calucate agent's time in current state
+            let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+            let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
+            let difference = currentTime - lastCall;
+            temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+          }
+          this.setState({
+            adminQueue: temp,
+            adminCallsWaiting: response.callsWaiting,
+            adminWaitTime: response.maxWaiting,
+            adminCallsCompleted: response.numCompleted,
+            adminCallsAbandoned: response.numAbandoned,
+            adminSLA: response.serviceLevelPerf
+          });
+        });
 
-    // take respose and members array, and remove needless characters from name string
-    const response = await res.data;
-    let temp = response.members;
-    temp.forEach(agent => {
-      let name = agent.name.substring(4);
-      agent.name = name;
-      agent.status = this.getStatus(agent);
-    });
-    this.setState({
-      adminQueue: temp,
-      adminCallsWaiting: response.callsWaiting,
-      adminWaitTime: response.maxWaiting,
-      adminCallsCompleted: response.numCompleted,
-      adminCallsAbandoned: response.numAbandoned,
-      adminSLA: response.serviceLevelPerf
-    });
-  }
+      // get student queue
+      axios
+        .get(url.replace("$QUEUE", STUDENT_QUEUE), {
+          headers: {
+            username: USERNAME,
+            password: PASSWORD
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(res => {
+          const response = res.data;
 
-  // get student queue
-  async getStudentCalls() {
-    let url =
-      "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
-    const res = await axios.get(url.replace("$QUEUE", STUDENT_QUEUE), {
-      headers: { username: USERNAME, password: PASSWORD }
-    });
-
-    const response = await res.data;
-    let temp = response.members;
-    temp.forEach(agent => {
-      let name = agent.name.substring(4);
-      agent.name = name;
-      agent.status = this.getStatus(agent);
-    });
-    this.setState({
-      studentQueue: temp,
-      studentCallsWaiting: response.callsWaiting,
-      studentWaitTime: response.maxWaiting,
-      studentCallsCompleted: response.numCompleted,
-      studentCallsAbandoned: response.numAbandoned,
-      studentSLA: response.serviceLevelPerf
-    });
+          let temp = response.members;
+          for (let i = 0; i < temp.length; i++) {
+            // take respose and members array, and remove needless characters from name string
+            let name = temp[i].name.substring(4);
+            temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            // calucate agent's time in current state
+            let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+            let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
+            let difference = currentTime - lastCall;
+            temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+          }
+          this.setState({
+            studentQueue: temp,
+            studentCallsWaiting: response.callsWaiting,
+            studentWaitTime: response.maxWaiting,
+            studentCallsCompleted: response.numCompleted,
+            studentCallsAbandoned: response.numAbandoned,
+            studentSLA: response.serviceLevelPerf
+          });
+        });
+    }, 1000);
   }
 
   replaceNames() {
@@ -155,14 +192,26 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
+  ppSeconds(time) {
+    let hours = Math.floor(time / 3600);
+    time %= 3600;
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    if (seconds < 10) {seconds = "0"+seconds;}
+    if (hours == 0 && minutes == 0) {
+      return seconds
+    } else if (hours == 0) {
+      return minutes + ":" + seconds
+    } else {
+      return hours + ":" + minutes + ":" + seconds
+    }
+}
+
+
+  componentDidMount() {
     // calls above functions
-    const makeCalls = async () => {
-      await this.getAdminCalls();
-      await this.getStudentCalls();
-      await this.getAgents();
-    };
-    setInterval(() => makeCalls(), 5000);
+    this.getAgents();
+    this.getCalls();
   }
 
   render() {

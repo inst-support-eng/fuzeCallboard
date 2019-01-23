@@ -31,6 +31,7 @@ export default class StudentPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   name={agent.agentName}
+                  statusTimer={agent.statusTimer}
                   callsTaken={agent.callsTaken}
                 />
               ];
@@ -44,6 +45,7 @@ export default class StudentPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   name={agent.agentName}
+                  statusTimer={agent.statusTimer}
                   callsTaken={agent.callsTaken}
                 />
               ];
