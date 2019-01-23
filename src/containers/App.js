@@ -57,79 +57,82 @@ class App extends Component {
   }
 
   // get calls for admin and student queue from fuze
-  getCalls() {
+  
+getCalls() {
     // get admin queue
-    let url =
-      "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
-    axios
-      .get(url.replace("$QUEUE", ADMIN_QUEUE), {
-        headers: {
-          username: USERNAME,
-          password: PASSWORD
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(res => {
-        // take respose and members array, and remove needless characters from name string
-        const response = res.data;
-        let temp = response.members;
-        for (let i = 0; i < temp.length; i++) {
-          let name = temp[i].name.substring(4);
-          temp[i].name = name;
-          temp[i].status = this.getStatus(temp[i]);
-          // calucate agent's time in current state
-          let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp 
-          let currentTime = Math.round((new Date()).getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000` 
-          let difference = currentTime - lastCall;
-          temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
-        }
-        this.setState({
-          adminQueue: temp,
-          adminCallsWaiting: response.callsWaiting,
-          adminWaitTime: response.maxWaiting,
-          adminCallsCompleted: response.numCompleted,
-          adminCallsAbandoned: response.numAbandoned,
-          adminSLA: response.serviceLevelPerf
-        });
-      });
-
-    // get student queue
-    axios
-      .get(url.replace("$QUEUE", STUDENT_QUEUE), {
-        headers: {
-          username: USERNAME,
-          password: PASSWORD
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .then(res => {
-        const response = res.data;
-
-        let temp = response.members;
-        for (let i = 0; i < temp.length; i++) {
+    setInterval(() => {
+      let url =
+        "https://synapse.thinkingphones.com/tpn-webapi-broker/services/queues/$QUEUE/status";
+      axios
+        .get(url.replace("$QUEUE", ADMIN_QUEUE), {
+          headers: {
+            username: USERNAME,
+            password: PASSWORD
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(res => {
           // take respose and members array, and remove needless characters from name string
-          let name = temp[i].name.substring(4);
-          temp[i].name = name;
-          temp[i].status = this.getStatus(temp[i]);
-          // calucate agent's time in current state
-          let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp 
-          let currentTime = Math.round((new Date()).getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000` 
-          let difference = currentTime - lastCall;
-          temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
-        }
-        this.setState({
-          studentQueue: temp,
-          studentCallsWaiting: response.callsWaiting,
-          studentWaitTime: response.maxWaiting,
-          studentCallsCompleted: response.numCompleted,
-          studentCallsAbandoned: response.numAbandoned,
-          studentSLA: response.serviceLevelPerf
+          const response = res.data;
+          let temp = response.members;
+          for (let i = 0; i < temp.length; i++) {
+            let name = temp[i].name.substring(4);
+            temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            // calucate agent's time in current state
+            let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+            let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
+            let difference = currentTime - lastCall;
+            temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+          }
+          this.setState({
+            adminQueue: temp,
+            adminCallsWaiting: response.callsWaiting,
+            adminWaitTime: response.maxWaiting,
+            adminCallsCompleted: response.numCompleted,
+            adminCallsAbandoned: response.numAbandoned,
+            adminSLA: response.serviceLevelPerf
+          });
         });
-      });
+
+      // get student queue
+      axios
+        .get(url.replace("$QUEUE", STUDENT_QUEUE), {
+          headers: {
+            username: USERNAME,
+            password: PASSWORD
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        })
+        .then(res => {
+          const response = res.data;
+
+          let temp = response.members;
+          for (let i = 0; i < temp.length; i++) {
+            // take respose and members array, and remove needless characters from name string
+            let name = temp[i].name.substring(4);
+            temp[i].name = name;
+            temp[i].status = this.getStatus(temp[i]);
+            // calucate agent's time in current state
+            let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+            let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
+            let difference = currentTime - lastCall;
+            temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+          }
+          this.setState({
+            studentQueue: temp,
+            studentCallsWaiting: response.callsWaiting,
+            studentWaitTime: response.maxWaiting,
+            studentCallsCompleted: response.numCompleted,
+            studentCallsAbandoned: response.numAbandoned,
+            studentSLA: response.serviceLevelPerf
+          });
+        });
+    }, 1000);
   }
 
   replaceNames() {
