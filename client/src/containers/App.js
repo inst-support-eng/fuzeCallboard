@@ -6,11 +6,6 @@ import AdminPhones from ".././components/AdminPhones/AdminPhones";
 
 require("dotenv").config();
 const axios = require("axios");
-const API_TOKEN = process.env.REACT_APP_API_TOKEN;
-const USERNAME = process.env.REACT_APP_USERNAME;
-const PASSWORD = process.env.REACT_APP_PASSWORD;
-const ADMIN_QUEUE = process.env.REACT_APP_ADMIN_QUEUE;
-const STUDENT_QUEUE = process.env.REACT_APP_STUDENT_QUEUE;
 
 class App extends Component {
   constructor() {
