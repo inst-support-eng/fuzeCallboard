@@ -34,7 +34,7 @@ class App extends Component {
     };
   }
 
-  // get agent nice name data from fuze
+  // makes api calls to server, where data is stored
   getAgents = async () => {
     const res = await axios.get("/api/getAgents");
     const response = res.data;
