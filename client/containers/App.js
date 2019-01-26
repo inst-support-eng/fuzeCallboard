@@ -1,49 +1,44 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "./App.css";
 
-import StudentPhones from "./components/StudentPhones/StudentPhones";
-import AdminPhones from "./components/AdminPhones/AdminPhones";
+import StudentPhones from ".././components/StudentPhones/StudentPhones";
+import AdminPhones from ".././components/AdminPhones/AdminPhones";
+
+require("dotenv").config();
+const axios = require("axios");
 
 class App extends Component {
-  // Initialize state
-  state = {
-    agents: [],
-    adminQueue: [],
-    adminCallsWaiting: 0,
-    adminWaitTime: 0,
-    adminActiveAgents: 0,
-    adminCallsCompleted: 0,
-    adminCallsAbandoned: 0,
-    adminSLA: 0,
-    studentQueue: [],
-    studentCallsWaiting: 0,
-    studentWaitTime: 0,
-    studentActiveAgents: 0,
-    studentCallsCompleted: 0,
-    studentCallsAbandoned: 0,
-    studentSLA: 0
-  };
-
-  componentDidMount() {
-    let getStats = () => {
-      this.getAgents();
-      this.getAdminQueue();
-      this.getStudentQueue();
+  constructor() {
+    super();
+    this.state = {
+      agents: [],
+      adminQueue: [],
+      adminCallsWaiting: 0,
+      adminWaitTime: 0,
+      adminActiveAgents: 0,
+      adminCallsCompleted: 0,
+      adminCallsAbandoned: 0,
+      adminSLA: 0,
+      studentQueue: [],
+      studentCallsWaiting: 0,
+      studentWaitTime: 0,
+      studentActiveAgents: 0,
+      studentCallsCompleted: 0,
+      studentCallsAbandoned: 0,
+      studentSLA: 0
     };
-
-    setInterval(() => getStats(), 1000);
   }
 
+  // makes api calls to server, where data is stored
   getAgents = async () => {
     const res = await axios.get("/api/getAgents");
-    let response = res.data;
+    const response = res.data;
     this.setState({ agents: response.agentEvents });
   };
 
   getAdminQueue = async () => {
     const res = await axios.get("/api/adminQueue");
-    console.log(res);
+
     const response = res.data;
     let temp = response.members;
     for (let i = 0; i < temp.length; i++) {
@@ -167,6 +162,16 @@ class App extends Component {
     } else {
       return hours + ":" + minutes;
     }
+  }
+
+  componentDidMount() {
+    let getStats = () => {
+      this.getAgents();
+      this.getAdminQueue();
+      this.getStudentQueue();
+    };
+
+    setInterval(() => getStats(), 1000);
   }
 
   render() {
