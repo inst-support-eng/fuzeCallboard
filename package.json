@@ -1,8 +1,11 @@
 {
   "name": "fuzeCallboard",
   "version": "1.0.0",
-  "description": "",
+  "description": "canvas fuze callboard",
   "main": "index.js",
+  "engines": {
+    "node": "11.2.0"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "concurrently \"npm run start\" \"npm run client\"",
