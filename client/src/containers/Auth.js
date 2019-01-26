@@ -7,8 +7,6 @@ const CLIENT_ID = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const PROD_URL = process.env.REACT_APP_PROD_URL;
 
 export default class Auth {
-  // Please use your own credentials here
-
   auth0 = new auth0.WebAuth({
     domain: DOMAIN,
     clientID: CLIENT_ID,
