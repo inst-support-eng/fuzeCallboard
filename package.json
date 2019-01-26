@@ -8,16 +8,16 @@
   },
   "scripts": {
     "start": "node index.js",
+    "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run start\" \"npm run client\"",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "blinkvondoom",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
     "concurrently": "^4.1.0",
-    "express": "^4.16.4",
-    "password-generator": "^2.2.0"
+    "express": "^4.16.4"
   }
 }

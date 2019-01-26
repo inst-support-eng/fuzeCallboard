@@ -1,5 +1,9 @@
 import React, { Component } from "react";
+import axios from "axios";
 import "./App.css";
+
+import StudentPhones from "./components/StudentPhones/StudentPhones";
+import AdminPhones from "./components/AdminPhones/AdminPhones";
 
 class App extends Component {
   // Initialize state
@@ -32,22 +36,15 @@ class App extends Component {
     setInterval(() => getStats(), 1000);
   }
 
-  getPasswords = () => {
-    // Get the passwords and store them in state
-    fetch("/api/passwords")
-      .then(res => res.json())
-      .then(passwords => this.setState({ passwords }));
-  };
-
   getAgents = async () => {
-    const res = await fetch("/api/getAgents");
-    const response = res.data;
+    const res = await axios.get("/api/getAgents");
+    let response = res.data;
     this.setState({ agents: response.agentEvents });
   };
 
   getAdminQueue = async () => {
-    const res = await fetch("/api/adminQueue");
-
+    const res = await axios.get("/api/adminQueue");
+    console.log(res);
     const response = res.data;
     let temp = response.members;
     for (let i = 0; i < temp.length; i++) {
@@ -72,7 +69,7 @@ class App extends Component {
   };
 
   getStudentQueue = async () => {
-    const res = await fetch("/api/studentQueue");
+    const res = await axios.get("/api/studentQueue");
     const response = res.data;
 
     let temp = response.members;
