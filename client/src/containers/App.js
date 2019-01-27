@@ -38,8 +38,8 @@ class App extends Component {
 
   getAdminQueue = async () => {
     const res = await axios.get("/api/adminQueue");
-
     const response = res.data;
+    let adminWaitTime = response.maxWaiting;
     let temp = response.members;
     for (let i = 0; i < temp.length; i++) {
       // temp[i].agentName = this.replaceNames(temp[i]);
@@ -47,7 +47,7 @@ class App extends Component {
       temp[i].name = name;
       temp[i].status = this.getStatus(temp[i]);
       // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
       let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
       let difference = currentTime - lastCall;
       temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
@@ -65,7 +65,7 @@ class App extends Component {
   getStudentQueue = async () => {
     const res = await axios.get("/api/studentQueue");
     const response = res.data;
-
+    let studentWaitTime = response.maxWaiting;
     let temp = response.members;
     for (let i = 0; i < temp.length; i++) {
       // take respose and members array, and remove needless characters from name string
@@ -73,7 +73,7 @@ class App extends Component {
       temp[i].name = name;
       temp[i].status = this.getStatus(temp[i]);
       // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // infuze API, lastCall is a unix timestamp
+      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
       let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
       let difference = currentTime - lastCall;
       temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
