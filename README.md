@@ -1,29 +1,32 @@
 ## Setup
 
-#### install react
+### Local Install Instructions
 
-open terminal <br>
-install npm <br>
-`npm install npm` <br>
-install react <br>
-`npm install react`
+1. Clone repository `git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
+1. Navigate to the repsitory `cd fuzeCallboard`
+1. Install root dependencies `npm install`
+1. Install client dependencies `cd client && npm install`
+1. Create a file named `.env` in the /client directory, add the enviromental variables (and their corrasponding values) listed at the bottom of this document
+1. Create a file named `dev.js` in the /config directory, add the enviromental variables (and their corrasponding values) listed at the bottom of this document
+1. Launch application `npm run dev`
 
-#### download code and create git
+### Heroku Install Instruction
+_Instructions assume Heroku CLI is installed_
+1. In your Heroku app, set up config-vars for the enviromental variables listed at the bottom of this document
+1. Clone the repository locally `git clone https://github.com/BlinkVonDoom/fuzeCallboard.git`
+1. Navigate to the repository `cd fuzeCallboard`
+1. Add Heroku as a remote `heroku git:remote -a pure-ocean-82350`
+1. Deploy to Heroku `git push heroku master`
 
-`git init` <br>
-`git clone https://github.com/BlinkVonDoom/fuzeCallboard.git` <br>
-navigate to fuzeCallboard with `cd fuzeCallboard` <br>
-run `npm install` to install required dependencies
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Enviromental Variables
+```
+REACT_APP_ADMIN_QUEUE
+REACT_APP_API_TOKEN
+REACT_APP_PASSWORD
+REACT_APP_STUDENT_QUEUE
+REACT_APP_USERNAME
+React_APP_AUTH0_DOMAIN
+REACT_APP_AUTH0_CLIENT_ID
+REACT_APP_AUTH0_CLIENT_SECRET
+REACT_APP_PROD_URL
+```
