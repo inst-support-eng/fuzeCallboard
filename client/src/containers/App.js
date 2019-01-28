@@ -162,7 +162,7 @@ class App extends Component {
     let minutes = Math.floor(time / 60);
     let seconds = time % 60;
     if (hours === 0 && minutes === 0 && seconds < 10) {
-      return "0:0" + seconds;
+      return "00:0" + seconds;
     } else if (hours === 0 && minutes == 0) {
       return "00:" + seconds;
     } else if (hours === 0 && minutes < 10 && seconds < 10) {
