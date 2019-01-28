@@ -160,18 +160,36 @@ class App extends Component {
     let hours = Math.floor(time / 3600);
     time %= 3600;
     let minutes = Math.floor(time / 60);
-    // let seconds = time % 60;
-    if (hours === 0 && minutes === 0) {
-      return "0:00";
+    let seconds = time % 60;
+    if (hours === 0 && minutes === 0 && seconds < 10) {
+      return "0:0" + seconds;
+    } else if (hours === 0 && minutes == 0) {
+      return "00:" + seconds;
+    } else if (hours === 0 && minutes < 10 && seconds < 10) {
+      return "0" + minutes + ":0" + seconds;
     } else if (hours === 0 && minutes < 10) {
-      return "0:0" + minutes;
-    } else if (hours > 0 && minutes < 10) {
-      return hours + ":0" + minutes;
+      return "0" + minutes + ":" + seconds;
+    } else if (hours === 0 && seconds < 10) {
+      return minutes + ":0" + seconds;
+    } else if (hours === 0) {
+      return minutes + ":" + seconds;
+    } else if (hours > 1 && minutes === 0 && seconds < 10) {
+      return hours + ":00:0" + seconds;
+    } else if (hours > 1 && minutes == 0) {
+      return hours + ":00:" + seconds;
+    } else if (hours > 1 && minutes < 10 && seconds < 10) {
+      return hours + ":0" + minutes + ":0" + seconds;
+    } else if (hours > 1 && minutes < 10) {
+      return hours + ":0" + minutes + seconds;
+    } else if (hours > 1 && seconds < 10) {
+      return hours + ":" + minutes + ":0" + seconds;
+    } else if (hours > 1) {
+      return hours + ":" + minutes + ":" + seconds;
     } else {
-      return hours + ":" + minutes;
+      return "—   "
     }
-  }
 
+  }
   componentDidMount() {
     let getStats = () => {
       this.getAgents();
