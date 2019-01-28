@@ -50,8 +50,14 @@ class App extends Component {
       let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
       let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
       let difference = currentTime - lastCall;
-      temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
+      if (temp[i].callsTaken === 0) {
+        temp[i].statusTimer = "—   ";
+      } else { 
+        temp[i].statusTimer = this.ppSeconds(difference); 
+      }
     }
+
     this.setState({
       adminQueue: temp,
       adminCallsWaiting: response.callsWaiting,
@@ -76,7 +82,12 @@ class App extends Component {
       let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
       let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
       let difference = currentTime - lastCall;
-      temp[i].statusTimer = this.ppSeconds(difference); // tbh i have no idea
+      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
+      if (temp[i].callsTaken === 0) {
+        temp[i].statusTimer = "—   ";
+      } else { 
+        temp[i].statusTimer = this.ppSeconds(difference); 
+      }
     }
     this.setState({
       studentQueue: temp,
@@ -149,15 +160,12 @@ class App extends Component {
     let hours = Math.floor(time / 3600);
     time %= 3600;
     let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-    if (seconds < 10) {
-      seconds = "0" + seconds;
-    }
-    if (hours == 0 && minutes == 0) {
-      return "0";
-    } else if (hours == 0) {
-      return minutes;
-    } else if (minutes < 10) {
+    // let seconds = time % 60;
+    if (hours === 0 && minutes === 0) {
+      return "0:00";
+    } else if (hours === 0 && minutes < 10) {
+      return "0:0" + minutes;
+    } else if (hours > 0 && minutes < 10) {
       return hours + ":0" + minutes;
     } else {
       return hours + ":" + minutes;
