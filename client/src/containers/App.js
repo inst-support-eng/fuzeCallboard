@@ -53,8 +53,8 @@ class App extends Component {
       // error handling, lastCall doesn't return anything if the agent hasn't taken a call
       if (temp[i].callsTaken === 0) {
         temp[i].statusTimer = "—   ";
-      } else { 
-        temp[i].statusTimer = this.ppSeconds(difference); 
+      } else {
+        temp[i].statusTimer = this.ppSeconds(difference);
       }
     }
 
@@ -85,8 +85,8 @@ class App extends Component {
       // error handling, lastCall doesn't return anything if the agent hasn't taken a call
       if (temp[i].callsTaken === 0) {
         temp[i].statusTimer = "—   ";
-      } else { 
-        temp[i].statusTimer = this.ppSeconds(difference); 
+      } else {
+        temp[i].statusTimer = this.ppSeconds(difference);
       }
     }
     this.setState({
@@ -186,9 +186,8 @@ class App extends Component {
     } else if (hours > 1) {
       return hours + ":" + minutes + ":" + seconds;
     } else {
-      return "—   "
+      return "—   ";
     }
-
   }
   componentDidMount() {
     let getStats = () => {
@@ -197,7 +196,7 @@ class App extends Component {
       this.getStudentQueue();
     };
 
-    setInterval(() => getStats(), 1000);
+    setInterval(() => getStats(), 5000);
   }
 
   render() {
