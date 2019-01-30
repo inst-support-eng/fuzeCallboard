@@ -32,7 +32,7 @@ export default class AdminAgents extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
-                  statusTimer={agent.statusTimer}
+                  statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
                 />
               ];
@@ -46,7 +46,7 @@ export default class AdminAgents extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
-                  statusTimer={agent.statusTimer}
+                  statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
                 />
               ];

@@ -41,25 +41,43 @@ class App extends Component {
     const response = res.data;
     let adminWaitTime = response.maxWaiting;
     let temp = response.members;
-    for (let i = 0; i < temp.length; i++) {
-      // temp[i].agentName = this.replaceNames(temp[i]);
-      let name = temp[i].name.substring(4);
-      temp[i].name = name;
-      temp[i].status = this.getStatus(temp[i]);
-      // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
-      let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
-      let difference = currentTime - lastCall;
-      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
-      if (temp[i].callsTaken === 0) {
-        temp[i].statusTimer = "—   ";
-      } else {
-        temp[i].statusTimer = this.ppSeconds(difference);
+
+    let adminQueue = [...this.state.adminQueue];
+
+    temp.forEach(el => {
+      let name = el.name.substr(4);
+      el.name = name;
+      el.status = this.getStatus(el);
+    });
+
+    temp.forEach(agent => {
+      let admin = adminQueue.find(el => {
+        return el.name === agent.name;
+      });
+
+      if (!admin) {
+        let statusTime = Math.round(new Date().getTime() / 1000);
+        agent.statusChangeTime = statusTime;
+        if (agent.callsTaken === 0) {
+          agent.statusTimer = "—   ";
+        }
+        adminQueue.push(agent);
       }
-    }
+
+      if (admin) {
+        if (admin.status !== agent.status) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          admin.statusChangeTime = statusTime;
+          admin.status = agent.status;
+          if (admin.callsTaken === 0) {
+            admin.statusTimer = "—   ";
+          }
+        }
+      }
+    });
 
     this.setState({
-      adminQueue: temp,
+      adminQueue: adminQueue,
       adminCallsWaiting: response.callsWaiting,
       adminWaitTime: response.maxWaiting,
       adminCallsCompleted: response.numCompleted,
@@ -73,24 +91,42 @@ class App extends Component {
     const response = res.data;
     let studentWaitTime = response.maxWaiting;
     let temp = response.members;
-    for (let i = 0; i < temp.length; i++) {
-      // take respose and members array, and remove needless characters from name string
-      let name = temp[i].name.substring(4);
-      temp[i].name = name;
-      temp[i].status = this.getStatus(temp[i]);
-      // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
-      let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
-      let difference = currentTime - lastCall;
-      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
-      if (temp[i].callsTaken === 0) {
-        temp[i].statusTimer = "—   ";
-      } else {
-        temp[i].statusTimer = this.ppSeconds(difference);
+
+    let studentQueue = [...this.state.studentQueue];
+
+    temp.forEach(el => {
+      let name = el.name.substr(4);
+      el.name = name;
+      el.status = this.getStatus(el);
+    });
+
+    temp.forEach(agent => {
+      let student = studentQueue.find(el => {
+        return el.name === agent.name;
+      });
+
+      if (!student) {
+        let statusTime = Math.round(new Date().getTime() / 1000);
+        agent.statusChangeTime = statusTime;
+        if (agent.callsTaken === 0) {
+          agent.statusTimer = "—   ";
+        }
+        studentQueue.push(agent);
       }
-    }
+
+      if (student) {
+        if (student.status !== agent.status) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          student.statusChangeTime = statusTime;
+          student.status = agent.status;
+          if (student.callsTaken === 0) {
+            student.statusTimer = "—   ";
+          }
+        }
+      }
+    });
     this.setState({
-      studentQueue: temp,
+      studentQueue: studentQueue,
       studentCallsWaiting: response.callsWaiting,
       studentWaitTime: response.maxWaiting,
       studentCallsCompleted: response.numCompleted,
@@ -156,39 +192,6 @@ class App extends Component {
     }
   }
 
-  ppSeconds(time) {
-    let hours = Math.floor(time / 3600);
-    time %= 3600;
-    let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-    if (hours === 0 && minutes === 0 && seconds < 10) {
-      return "0:0" + seconds;
-    } else if (hours === 0 && minutes == 0) {
-      return "00:" + seconds;
-    } else if (hours === 0 && minutes < 10 && seconds < 10) {
-      return "0" + minutes + ":0" + seconds;
-    } else if (hours === 0 && minutes < 10) {
-      return "0" + minutes + ":" + seconds;
-    } else if (hours === 0 && seconds < 10) {
-      return minutes + ":0" + seconds;
-    } else if (hours === 0) {
-      return minutes + ":" + seconds;
-    } else if (hours > 1 && minutes === 0 && seconds < 10) {
-      return hours + ":00:0" + seconds;
-    } else if (hours > 1 && minutes == 0) {
-      return hours + ":00:" + seconds;
-    } else if (hours > 1 && minutes < 10 && seconds < 10) {
-      return hours + ":0" + minutes + ":0" + seconds;
-    } else if (hours > 1 && minutes < 10) {
-      return hours + ":0" + minutes + seconds;
-    } else if (hours > 1 && seconds < 10) {
-      return hours + ":" + minutes + ":0" + seconds;
-    } else if (hours > 1) {
-      return hours + ":" + minutes + ":" + seconds;
-    } else {
-      return "—   ";
-    }
-  }
   componentDidMount() {
     let getStats = () => {
       this.getAgents();
