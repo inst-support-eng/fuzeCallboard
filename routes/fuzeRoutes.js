@@ -63,6 +63,7 @@ module.exports = app => {
           } else {
             admin.statusChangeTime = admin.lastCall;
           }
+          adminQueue.push(admin);
         }
 
         if (admin.status !== agent.status || admin.paused != agent.paused) {
@@ -74,7 +75,14 @@ module.exports = app => {
         }
       });
     }
-    response.data.members = adminQueue;
+
+    let newArr = adminQueue.filter(el1 => {
+      return temp.some(el2 => {
+        return el1.name === el2.name;
+      });
+    });
+
+    response.data.members = newArr;
     return (adminData = response.data);
   };
 
@@ -119,6 +127,7 @@ module.exports = app => {
           } else {
             student.statusChangeTime = student.lastCall;
           }
+          studentQueue.push(student);
         }
 
         if (student.status !== agent.status || student.paused != agent.paused) {
@@ -130,7 +139,14 @@ module.exports = app => {
         }
       });
     }
-    response.data.members = studentQueue;
+
+    let newArr = studentQueue.filter(el1 => {
+      return temp.some(el2 => {
+        return el1.name === el2.name;
+      });
+    });
+
+    response.data.members = newArr;
     return (studentData = response.data);
   };
 
