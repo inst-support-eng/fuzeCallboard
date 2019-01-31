@@ -40,40 +40,10 @@ class App extends Component {
     const res = await axios.get("/api/adminQueue");
     const response = res.data;
     let adminWaitTime = response.maxWaiting;
-    let temp = response.members;
+    let adminQueue = [...response.members];
 
-    let adminQueue = [...this.state.adminQueue];
-
-    temp.forEach(el => {
-      let name = el.name.substr(4);
-      el.name = name;
-      el.status = this.getStatus(el);
-    });
-
-    temp.forEach(agent => {
-      let admin = adminQueue.find(el => {
-        return el.name === agent.name;
-      });
-
-      if (!admin) {
-        let statusTime = Math.round(new Date().getTime() / 1000);
-        agent.statusChangeTime = statusTime;
-        if (agent.callsTaken === 0) {
-          agent.statusTimer = "—   ";
-        }
-        adminQueue.push(agent);
-      }
-
-      if (admin) {
-        if (admin.status !== agent.status) {
-          let statusTime = Math.round(new Date().getTime() / 1000);
-          admin.statusChangeTime = statusTime;
-          admin.status = agent.status;
-          if (admin.callsTaken === 0) {
-            admin.statusTimer = "—   ";
-          }
-        }
-      }
+    adminQueue.forEach(el => {
+      return (el.status = this.getStatus(el));
     });
 
     this.setState({
@@ -90,41 +60,12 @@ class App extends Component {
     const res = await axios.get("/api/studentQueue");
     const response = res.data;
     let studentWaitTime = response.maxWaiting;
-    let temp = response.members;
+    let studentQueue = [...response.members];
 
-    let studentQueue = [...this.state.studentQueue];
-
-    temp.forEach(el => {
-      let name = el.name.substr(4);
-      el.name = name;
-      el.status = this.getStatus(el);
+    studentQueue.forEach(el => {
+      return (el.status = this.getStatus(el));
     });
 
-    temp.forEach(agent => {
-      let student = studentQueue.find(el => {
-        return el.name === agent.name;
-      });
-
-      if (!student) {
-        let statusTime = Math.round(new Date().getTime() / 1000);
-        agent.statusChangeTime = statusTime;
-        if (agent.callsTaken === 0) {
-          agent.statusTimer = "—   ";
-        }
-        studentQueue.push(agent);
-      }
-
-      if (student) {
-        if (student.status !== agent.status) {
-          let statusTime = Math.round(new Date().getTime() / 1000);
-          student.statusChangeTime = statusTime;
-          student.status = agent.status;
-          if (student.callsTaken === 0) {
-            student.statusTimer = "—   ";
-          }
-        }
-      }
-    });
     this.setState({
       studentQueue: studentQueue,
       studentCallsWaiting: response.callsWaiting,
@@ -163,7 +104,7 @@ class App extends Component {
     });
   };
 
-  getStatus(agent) {
+  getStatus = agent => {
     // status codes
     // 1: "Available";
     // 2: "On a Call";
@@ -190,7 +131,7 @@ class App extends Component {
     if (agent.status === 5) {
       return (agent.status = "Unavailable");
     }
-  }
+  };
 
   componentDidMount() {
     let getStats = () => {

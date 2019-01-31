@@ -24,6 +24,49 @@ module.exports = app => {
     const response = await axios.get(url.replace("$QUEUE", ADMIN_QUEUE), {
       headers: { username: USERNAME, password: PASSWORD }
     });
+
+    let adminQueue = [];
+    let temp = response.data.members;
+
+    temp.forEach(el => {
+      let name = el.name.substr(4);
+      el.name = name;
+      el.statusTime = Math.round(new Date().getTime() / 1000);
+    });
+
+    if (!adminData.members) {
+      adminQueue = temp;
+    }
+
+    if (adminData.members) {
+      adminQueue = [...adminData.members];
+
+      temp.forEach(agent => {
+        let admin = agent;
+
+        adminQueue.forEach(el => {
+          if (el.name === agent.name) {
+            admin = el;
+          }
+        });
+
+        if (admin == agent) {
+          let name = admin.name.substr(4);
+          admin.name = name;
+          admin.statusTime = Math.round(new Date().getTime() / 1000);
+          adminQueue.push(admin);
+        }
+
+        if (admin.status !== agent.status || admin.paused != agent.paused) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          admin.statusChangeTime = statusTime;
+          admin.callsTaken = agent.callsTaken;
+          admin.status = agent.status;
+          admin.paused = agent.paused;
+        }
+      });
+    }
+    response.data.members = adminQueue;
     return (adminData = response.data);
   };
 
@@ -31,6 +74,47 @@ module.exports = app => {
     const response = await axios.get(url.replace("$QUEUE", STUDENT_QUEUE), {
       headers: { username: USERNAME, password: PASSWORD }
     });
+
+    let studentQueue = [];
+    let temp = response.data.members;
+
+    temp.forEach(el => {
+      let name = el.name.substr(4);
+      el.name = name;
+      el.statusTime = Math.round(new Date().getTime() / 1000);
+    });
+
+    if (!studentData.members) {
+      studentQueue = temp;
+    }
+
+    if (studentData.members) {
+      studentQueue = [...studentData.members];
+
+      temp.forEach(agent => {
+        let student = agent;
+        studentQueue.forEach(async el => {
+          if (el.name === agent.name) {
+            student = el;
+          }
+        });
+
+        if (student == agent) {
+          let name = student.name.substr(4);
+          student.name = name;
+          student.statusTime = Math.round(new Date().getTime() / 1000);
+        }
+
+        if (student.status !== agent.status || student.paused != agent.paused) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          student.statusChangeTime = statusTime;
+          student.callsTaken = agent.callsTaken;
+          student.status = agent.status;
+          student.paused = agent.paused;
+        }
+      });
+    }
+    response.data.members = studentQueue;
     return (studentData = response.data);
   };
 
