@@ -11,7 +11,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      agents: [],
       adminQueue: [],
       adminCallsWaiting: 0,
       adminWaitTime: 0,
@@ -30,11 +29,11 @@ class App extends Component {
   }
 
   // makes api calls to server, where data is stored
-  getAgents = async () => {
-    const res = await axios.get("/api/getAgents");
-    const response = res.data;
-    this.setState({ agents: response.agentEvents });
-  };
+  // getAgents = async () => {
+  //   const res = await axios.get("/api/getAgents");
+  //   const response = res.data;
+  //   this.setState({ agents: response.agentEvents });
+  // };
 
   getAdminQueue = async () => {
     const res = await axios.get("/api/adminQueue");
@@ -43,7 +42,7 @@ class App extends Component {
     let adminQueue = [...response.members];
 
     adminQueue.forEach(el => {
-      return (el.status = this.getStatus(el));
+      return (el.agentStatus = this.getStatus(el));
     });
 
     this.setState({
@@ -63,7 +62,7 @@ class App extends Component {
     let studentQueue = [...response.members];
 
     studentQueue.forEach(el => {
-      return (el.status = this.getStatus(el));
+      return (el.agentStatus = this.getStatus(el));
     });
 
     this.setState({
@@ -73,34 +72,6 @@ class App extends Component {
       studentCallsCompleted: response.numCompleted,
       studentCallsAbandoned: response.numAbandoned,
       studentSLA: response.serviceLevelPerf
-    });
-  };
-
-  replaceNames = () => {
-    // replaces names from admin/ student q with less crap ones
-    this.state.agents.forEach(agent => {
-      let peerName = agent.peerName;
-      let toChange = "";
-      if (agent.userId.includes(".instru")) {
-        toChange = agent.userId.replace(".instru", "");
-      } else if (agent.userId.includes("@instructure")) {
-        toChange = agent.userId.replace("@instructure.com", "");
-      } else {
-        toChange = agent.userId;
-      }
-
-      this.state.adminQueue.forEach(admin => {
-        let agentName = admin.name;
-        if (peerName === agentName) {
-          return (admin.userId = toChange);
-        }
-      });
-      this.state.studentQueue.forEach(student => {
-        let agentName = student.name;
-        if (peerName === agentName) {
-          return (student.userId = toChange);
-        }
-      });
     });
   };
 
@@ -135,16 +106,15 @@ class App extends Component {
 
   componentDidMount() {
     let getStats = () => {
-      this.getAgents();
+      //  this.getAgents();
       this.getAdminQueue();
       this.getStudentQueue();
     };
 
-    setInterval(() => getStats(), 5000);
+    setInterval(() => getStats(), 1000);
   }
 
   render() {
-    this.replaceNames();
     return (
       <div className="grid-container">
         <StudentPhones

@@ -7,10 +7,10 @@ export default class AdminAgents extends React.Component {
     let adminOnCall = [];
 
     this.props.adminQueue.forEach(agent => {
-      if (agent.status === "Available") {
+      if (agent.agentStatus === "Available") {
         adminAvailable.push(agent);
       }
-      if (agent.status === "On a Call") {
+      if (agent.agentStatus === "On a Call") {
         adminOnCall.push(agent);
       }
     });

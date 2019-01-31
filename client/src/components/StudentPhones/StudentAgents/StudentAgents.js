@@ -6,10 +6,10 @@ export default class StudentAgents extends React.Component {
     let studentAvailable = [];
     let studentOnCall = [];
     this.props.studentQueue.forEach(agent => {
-      if (agent.status === "Available") {
+      if (agent.agentStatus === "Available") {
         studentAvailable.push(agent);
       }
-      if (agent.status === "On a Call") {
+      if (agent.agentStatus === "On a Call") {
         studentOnCall.push(agent);
       }
     });

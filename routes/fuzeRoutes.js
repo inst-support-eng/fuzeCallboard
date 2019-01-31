@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const keys = require("../config/keys");
+const replaceNames = require("../helpers/replaceNames");
 
 const API_TOKEN = keys.REACT_APP_API_TOKEN;
 const USERNAME = keys.REACT_APP_USERNAME;
@@ -31,7 +32,11 @@ module.exports = app => {
     temp.forEach(el => {
       let name = el.name.substr(4);
       el.name = name;
-      el.statusTime = Math.round(new Date().getTime() / 1000);
+      if (el.callsTaken === 0) {
+        el.statusChangeTime = "—   ";
+      } else {
+        el.statusChangeTime = el.lastCall;
+      }
     });
 
     if (!adminData.members) {
@@ -44,7 +49,7 @@ module.exports = app => {
       temp.forEach(agent => {
         let admin = agent;
 
-        adminQueue.forEach(el => {
+        let index = adminQueue.forEach(el => {
           if (el.name === agent.name) {
             admin = el;
           }
@@ -53,8 +58,11 @@ module.exports = app => {
         if (admin == agent) {
           let name = admin.name.substr(4);
           admin.name = name;
-          admin.statusTime = Math.round(new Date().getTime() / 1000);
-          adminQueue.push(admin);
+          if (admin.callsTaken === 0) {
+            admin.statusChangeTime = "—   ";
+          } else {
+            admin.statusChangeTime = admin.lastCall;
+          }
         }
 
         if (admin.status !== agent.status || admin.paused != agent.paused) {
@@ -81,7 +89,11 @@ module.exports = app => {
     temp.forEach(el => {
       let name = el.name.substr(4);
       el.name = name;
-      el.statusTime = Math.round(new Date().getTime() / 1000);
+      if (el.callsTaken === 0) {
+        el.statusChangeTime = "—   ";
+      } else {
+        el.statusChangeTime = el.lastCall;
+      }
     });
 
     if (!studentData.members) {
@@ -102,7 +114,11 @@ module.exports = app => {
         if (student == agent) {
           let name = student.name.substr(4);
           student.name = name;
-          student.statusTime = Math.round(new Date().getTime() / 1000);
+          if (student.callsTaken === 0) {
+            student.statusChangeTime = "—   ";
+          } else {
+            student.statusChangeTime = student.lastCall;
+          }
         }
 
         if (student.status !== agent.status || student.paused != agent.paused) {
@@ -133,9 +149,15 @@ module.exports = app => {
 
   // makes the above calls to fuze every 5 seconds. not browser based
   setInterval(() => {
-    getAdminData(), getStudentData(), getAgentData();
+    getAdminData(),
+      getStudentData(),
+      getAgentData(),
+      replaceNames(
+        agentData.agentEvents,
+        studentData.members,
+        adminData.members
+      );
   }, 5000);
-
   // these are the routes react reaches
   // they just return the data that is stored in the arrays
   // so it doesnt matter how many calls are made

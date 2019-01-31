@@ -7,10 +7,10 @@ export default class AdminPaused extends React.Component {
     let adminUnavailable = [];
 
     this.props.adminQueue.forEach(agent => {
-      if (agent.status === "Paused") {
+      if (agent.agentStatus === "Paused") {
         adminPaused.push(agent);
       }
-      if (agent.status === "Unavailable") {
+      if (agent.agentStatus === "Unavailable") {
         adminUnavailable.push(agent);
       }
     });
