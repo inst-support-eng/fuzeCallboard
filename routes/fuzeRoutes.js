@@ -56,7 +56,7 @@ module.exports = app => {
         });
 
         if (admin == agent) {
-          let name = admin.name.substr(4);
+          let name = admin.name.replace("SIP/", "");
           admin.name = name;
           if (admin.callsTaken === 0) {
             admin.statusChangeTime = "—   ";
@@ -72,6 +72,15 @@ module.exports = app => {
           admin.callsTaken = agent.callsTaken;
           admin.status = agent.status;
           admin.paused = agent.paused;
+        }
+
+        let exists = adminQueue.some(el => {
+          return el.name === admin.name;
+        });
+
+        if (!exists) {
+          console.log(exists, admin.name);
+          adminQueue.push(admin);
         }
       });
     }
@@ -95,7 +104,7 @@ module.exports = app => {
     let temp = response.data.members;
 
     temp.forEach(el => {
-      let name = el.name.substr(4);
+      let name = el.name.replace("SIP/", "");
       el.name = name;
       if (el.callsTaken === 0) {
         el.statusChangeTime = "—   ";
@@ -113,6 +122,7 @@ module.exports = app => {
 
       temp.forEach(agent => {
         let student = agent;
+
         studentQueue.forEach(async el => {
           if (el.name === agent.name) {
             student = el;
@@ -120,14 +130,13 @@ module.exports = app => {
         });
 
         if (student == agent) {
-          let name = student.name.substr(4);
+          let name = student.name.replace("SIP/", "");
           student.name = name;
           if (student.callsTaken === 0) {
             student.statusChangeTime = "—   ";
           } else {
             student.statusChangeTime = student.lastCall;
           }
-          studentQueue.push(student);
         }
 
         if (student.status !== agent.status || student.paused != agent.paused) {
@@ -136,6 +145,13 @@ module.exports = app => {
           student.callsTaken = agent.callsTaken;
           student.status = agent.status;
           student.paused = agent.paused;
+        }
+        let exists = studentQueue.some(el => {
+          return el.name === student.name;
+        });
+        if (!exists) {
+          console.log(student.name);
+          studentQueue.push(student);
         }
       });
     }
