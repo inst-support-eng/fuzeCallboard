@@ -11,7 +11,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      agents: [],
       adminQueue: [],
       adminCallsWaiting: 0,
       adminWaitTime: 0,
@@ -30,36 +29,24 @@ class App extends Component {
   }
 
   // makes api calls to server, where data is stored
-  getAgents = async () => {
-    const res = await axios.get("/api/getAgents");
-    const response = res.data;
-    this.setState({ agents: response.agentEvents });
-  };
+  // getAgents = async () => {
+  //   const res = await axios.get("/api/getAgents");
+  //   const response = res.data;
+  //   this.setState({ agents: response.agentEvents });
+  // };
 
   getAdminQueue = async () => {
     const res = await axios.get("/api/adminQueue");
     const response = res.data;
     let adminWaitTime = response.maxWaiting;
-    let temp = response.members;
-    for (let i = 0; i < temp.length; i++) {
-      // temp[i].agentName = this.replaceNames(temp[i]);
-      let name = temp[i].name.substring(4);
-      temp[i].name = name;
-      temp[i].status = this.getStatus(temp[i]);
-      // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
-      let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
-      let difference = currentTime - lastCall;
-      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
-      if (temp[i].callsTaken === 0) {
-        temp[i].statusTimer = "—   ";
-      } else {
-        temp[i].statusTimer = this.ppSeconds(difference);
-      }
-    }
+    let adminQueue = [...response.members];
+
+    adminQueue.forEach(el => {
+      return (el.agentStatus = this.getStatus(el));
+    });
 
     this.setState({
-      adminQueue: temp,
+      adminQueue: adminQueue,
       adminCallsWaiting: response.callsWaiting,
       adminWaitTime: response.maxWaiting,
       adminCallsCompleted: response.numCompleted,
@@ -72,25 +59,14 @@ class App extends Component {
     const res = await axios.get("/api/studentQueue");
     const response = res.data;
     let studentWaitTime = response.maxWaiting;
-    let temp = response.members;
-    for (let i = 0; i < temp.length; i++) {
-      // take respose and members array, and remove needless characters from name string
-      let name = temp[i].name.substring(4);
-      temp[i].name = name;
-      temp[i].status = this.getStatus(temp[i]);
-      // calucate agent's time in current state
-      let lastCall = temp[i].lastCall; // fuze API, lastCall returns a unix timestamp
-      let currentTime = Math.round(new Date().getTime() / 1000); // getTime() returns miliseconds, hence: `/ 1000`
-      let difference = currentTime - lastCall;
-      // error handling, lastCall doesn't return anything if the agent hasn't taken a call
-      if (temp[i].callsTaken === 0) {
-        temp[i].statusTimer = "—   ";
-      } else {
-        temp[i].statusTimer = this.ppSeconds(difference);
-      }
-    }
+    let studentQueue = [...response.members];
+
+    studentQueue.forEach(el => {
+      return (el.agentStatus = this.getStatus(el));
+    });
+
     this.setState({
-      studentQueue: temp,
+      studentQueue: studentQueue,
       studentCallsWaiting: response.callsWaiting,
       studentWaitTime: response.maxWaiting,
       studentCallsCompleted: response.numCompleted,
@@ -99,35 +75,7 @@ class App extends Component {
     });
   };
 
-  replaceNames = () => {
-    // replaces names from admin/ student q with less crap ones
-    this.state.agents.forEach(agent => {
-      let peerName = agent.peerName;
-      let toChange = "";
-      if (agent.userId.includes(".instru")) {
-        toChange = agent.userId.replace(".instru", "");
-      } else if (agent.userId.includes("@instructure")) {
-        toChange = agent.userId.replace("@instructure.com", "");
-      } else {
-        toChange = agent.userId;
-      }
-
-      this.state.adminQueue.forEach(admin => {
-        let agentName = admin.name;
-        if (peerName === agentName) {
-          return (admin.userId = toChange);
-        }
-      });
-      this.state.studentQueue.forEach(student => {
-        let agentName = student.name;
-        if (peerName === agentName) {
-          return (student.userId = toChange);
-        }
-      });
-    });
-  };
-
-  getStatus(agent) {
+  getStatus = agent => {
     // status codes
     // 1: "Available";
     // 2: "On a Call";
@@ -154,53 +102,19 @@ class App extends Component {
     if (agent.status === 5) {
       return (agent.status = "Unavailable");
     }
-  }
+  };
 
-  ppSeconds(time) {
-    let hours = Math.floor(time / 3600);
-    time %= 3600;
-    let minutes = Math.floor(time / 60);
-    let seconds = time % 60;
-    if (hours === 0 && minutes === 0 && seconds < 10) {
-      return "00:0" + seconds;
-    } else if (hours === 0 && minutes == 0) {
-      return "00:" + seconds;
-    } else if (hours === 0 && minutes < 10 && seconds < 10) {
-      return "0" + minutes + ":0" + seconds;
-    } else if (hours === 0 && minutes < 10) {
-      return "0" + minutes + ":" + seconds;
-    } else if (hours === 0 && seconds < 10) {
-      return minutes + ":0" + seconds;
-    } else if (hours === 0) {
-      return minutes + ":" + seconds;
-    } else if (hours > 1 && minutes === 0 && seconds < 10) {
-      return hours + ":00:0" + seconds;
-    } else if (hours > 1 && minutes == 0) {
-      return hours + ":00:" + seconds;
-    } else if (hours > 1 && minutes < 10 && seconds < 10) {
-      return hours + ":0" + minutes + ":0" + seconds;
-    } else if (hours > 1 && minutes < 10) {
-      return hours + ":0" + minutes + seconds;
-    } else if (hours > 1 && seconds < 10) {
-      return hours + ":" + minutes + ":0" + seconds;
-    } else if (hours > 1) {
-      return hours + ":" + minutes + ":" + seconds;
-    } else {
-      return "—   ";
-    }
-  }
   componentDidMount() {
     let getStats = () => {
-      this.getAgents();
+      //  this.getAgents();
       this.getAdminQueue();
       this.getStudentQueue();
     };
 
-    setInterval(() => getStats(), 5000);
+    setInterval(() => getStats(), 1000);
   }
 
   render() {
-    this.replaceNames();
     return (
       <div className="grid-container">
         <StudentPhones

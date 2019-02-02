@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const keys = require("../config/keys");
+const replaceNames = require("../helpers/replaceNames");
 
 const API_TOKEN = keys.REACT_APP_API_TOKEN;
 const USERNAME = keys.REACT_APP_USERNAME;
@@ -24,6 +25,73 @@ module.exports = app => {
     const response = await axios.get(url.replace("$QUEUE", ADMIN_QUEUE), {
       headers: { username: USERNAME, password: PASSWORD }
     });
+
+    let adminQueue = [];
+    let temp = response.data.members;
+
+    temp.forEach(el => {
+      let name = el.name.substr(4);
+      el.name = name;
+      if (el.callsTaken === 0) {
+        el.statusChangeTime = "—   ";
+      } else {
+        el.statusChangeTime = el.lastCall;
+      }
+    });
+
+    if (!adminData.members) {
+      adminQueue = temp;
+    }
+
+    if (adminData.members) {
+      adminQueue = [...adminData.members];
+
+      temp.forEach(agent => {
+        let admin = agent;
+
+        let index = adminQueue.forEach(el => {
+          if (el.name === agent.name) {
+            admin = el;
+          }
+        });
+
+        if (admin == agent) {
+          let name = admin.name.replace("SIP/", "");
+          admin.name = name;
+          if (admin.callsTaken === 0) {
+            admin.statusChangeTime = "—   ";
+          } else {
+            admin.statusChangeTime = admin.lastCall;
+          }
+          adminQueue.push(admin);
+        }
+
+        if (admin.status !== agent.status || admin.paused != agent.paused) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          admin.statusChangeTime = statusTime;
+          admin.callsTaken = agent.callsTaken;
+          admin.status = agent.status;
+          admin.paused = agent.paused;
+        }
+
+        let exists = adminQueue.some(el => {
+          return el.name === admin.name;
+        });
+
+        if (!exists) {
+          console.log(exists, admin.name);
+          adminQueue.push(admin);
+        }
+      });
+    }
+
+    let newArr = adminQueue.filter(el1 => {
+      return temp.some(el2 => {
+        return el1.name === el2.name;
+      });
+    });
+
+    response.data.members = newArr;
     return (adminData = response.data);
   };
 
@@ -31,6 +99,70 @@ module.exports = app => {
     const response = await axios.get(url.replace("$QUEUE", STUDENT_QUEUE), {
       headers: { username: USERNAME, password: PASSWORD }
     });
+
+    let studentQueue = [];
+    let temp = response.data.members;
+
+    temp.forEach(el => {
+      let name = el.name.replace("SIP/", "");
+      el.name = name;
+      if (el.callsTaken === 0) {
+        el.statusChangeTime = "—   ";
+      } else {
+        el.statusChangeTime = el.lastCall;
+      }
+    });
+
+    if (!studentData.members) {
+      studentQueue = temp;
+    }
+
+    if (studentData.members) {
+      studentQueue = [...studentData.members];
+
+      temp.forEach(agent => {
+        let student = agent;
+
+        studentQueue.forEach(async el => {
+          if (el.name === agent.name) {
+            student = el;
+          }
+        });
+
+        if (student == agent) {
+          let name = student.name.replace("SIP/", "");
+          student.name = name;
+          if (student.callsTaken === 0) {
+            student.statusChangeTime = "—   ";
+          } else {
+            student.statusChangeTime = student.lastCall;
+          }
+        }
+
+        if (student.status !== agent.status || student.paused != agent.paused) {
+          let statusTime = Math.round(new Date().getTime() / 1000);
+          student.statusChangeTime = statusTime;
+          student.callsTaken = agent.callsTaken;
+          student.status = agent.status;
+          student.paused = agent.paused;
+        }
+        let exists = studentQueue.some(el => {
+          return el.name === student.name;
+        });
+        if (!exists) {
+          console.log(student.name);
+          studentQueue.push(student);
+        }
+      });
+    }
+
+    let newArr = studentQueue.filter(el1 => {
+      return temp.some(el2 => {
+        return el1.name === el2.name;
+      });
+    });
+
+    response.data.members = newArr;
     return (studentData = response.data);
   };
 
@@ -49,9 +181,15 @@ module.exports = app => {
 
   // makes the above calls to fuze every 5 seconds. not browser based
   setInterval(() => {
-    getAdminData(), getStudentData(), getAgentData();
+    getAdminData(),
+      getStudentData(),
+      getAgentData(),
+      replaceNames(
+        agentData.agentEvents,
+        studentData.members,
+        adminData.members
+      );
   }, 5000);
-
   // these are the routes react reaches
   // they just return the data that is stored in the arrays
   // so it doesnt matter how many calls are made

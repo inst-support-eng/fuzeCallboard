@@ -6,10 +6,10 @@ export default class StudentPaused extends React.Component {
     let studentPaused = [];
     let studentUnavailable = [];
     this.props.studentQueue.forEach(agent => {
-      if (agent.status === "Paused") {
+      if (agent.agentStatus === "Paused") {
         studentPaused.push(agent);
       }
-      if (agent.status === "Unavailable") {
+      if (agent.agentStatus === "Unavailable") {
         studentUnavailable.push(agent);
       }
     });
@@ -31,7 +31,7 @@ export default class StudentPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
-                  statusTimer={agent.statusTimer}
+                  statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
                 />
               ];
@@ -45,7 +45,7 @@ export default class StudentPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
-                  statusTimer={agent.statusTimer}
+                  statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
                 />
               ];
