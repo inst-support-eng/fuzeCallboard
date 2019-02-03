@@ -36,8 +36,10 @@ export default class AgentDisplay extends React.Component {
   }
   render() {
     let time = this.props.statusTimer;
+    let penalty = this.props.penalty;
     let currentTime = Math.round(new Date().getTime() / 1000);
     let difference = currentTime - time;
+    console.log(this.props.userId.substring(0, 10) + " => " + penalty);
 
     return (
       <tbody>
