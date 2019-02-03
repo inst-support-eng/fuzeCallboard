@@ -31,7 +31,6 @@ module.exports = app => {
 
     temp.forEach(el => {
       let penalty = el.penalty
-      console.log(name + " => " + penalty);
       let name = el.name.substr(4);
       el.name = name;
       if (el.callsTaken === 0) {

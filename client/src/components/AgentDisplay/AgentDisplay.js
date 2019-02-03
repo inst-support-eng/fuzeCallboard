@@ -34,19 +34,24 @@ export default class AgentDisplay extends React.Component {
       return "—   ";
     }
   }
+
   render() {
     let time = this.props.statusTimer;
     let penalty = this.props.penalty;
-    let currentTime = Math.round(new Date().getTime() / 1000);
-    let difference = currentTime - time;
-    console.log(this.props.userId.substring(0, 10) + " => " + penalty);
+    if (penalty >= 5) {
+      var displayTime = "overflow"
+    } else {
+      let currentTime = Math.round(new Date().getTime() / 1000);
+      let difference = currentTime - time;
+      var displayTime = this.ppSeconds(difference);
+    }
 
     return (
       <tbody>
         <tr>
           <td>{this.props.userId ? this.props.userId.substring(0, 10) : ""}</td>
           <td>{this.props.counter}</td>
-          <td align="right">{this.ppSeconds(difference)}</td>
+          <td align="right">{displayTime}</td>
           <td align="right">{this.props.callsTaken}</td>
         </tr>
       </tbody>

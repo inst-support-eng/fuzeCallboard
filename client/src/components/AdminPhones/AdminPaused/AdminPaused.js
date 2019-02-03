@@ -34,6 +34,7 @@ export default class AdminPaused extends React.Component {
                   userId={agent.userId}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
@@ -48,6 +49,7 @@ export default class AdminPaused extends React.Component {
                   userId={agent.userId}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}

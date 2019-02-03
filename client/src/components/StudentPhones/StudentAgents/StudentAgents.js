@@ -32,6 +32,7 @@ export default class StudentAgents extends React.Component {
                   userId={agent.userId}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
@@ -46,6 +47,7 @@ export default class StudentAgents extends React.Component {
                   userId={agent.userId}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
