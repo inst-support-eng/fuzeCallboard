@@ -15,6 +15,14 @@ export default class AdminAgents extends React.Component {
       }
     });
 
+    adminAvailable = adminAvailable.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
+
+    adminOnCall = adminOnCall.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
+
     return (
       <div className="cbstats stats5 agentcontainer">
         <table>
@@ -32,8 +40,10 @@ export default class AdminAgents extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
+                  status={agent.status}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
@@ -48,6 +58,7 @@ export default class AdminAgents extends React.Component {
                   userId={agent.userId}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}

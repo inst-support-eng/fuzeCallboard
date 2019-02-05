@@ -15,6 +15,14 @@ export default class AdminPaused extends React.Component {
       }
     });
 
+    adminPaused = adminPaused.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
+
+    adminUnavailable = adminUnavailable.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
+
     return (
       <div className="cbstats stats6 agentcontainer at-calls-paused-tab">
         <table>
@@ -32,8 +40,10 @@ export default class AdminPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
+                  status={agent.status}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
@@ -46,8 +56,10 @@ export default class AdminPaused extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
+                  status={agent.status}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}

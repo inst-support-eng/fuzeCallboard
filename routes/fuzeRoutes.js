@@ -30,6 +30,7 @@ module.exports = app => {
     let temp = response.data.members;
 
     temp.forEach(el => {
+      let penalty = el.penalty
       let name = el.name.substr(4);
       el.name = name;
       if (el.callsTaken === 0) {

@@ -106,7 +106,6 @@ class App extends Component {
 
   componentDidMount() {
     let getStats = () => {
-      //  this.getAgents();
       this.getAdminQueue();
       this.getStudentQueue();
     };

@@ -13,6 +13,14 @@ export default class StudentAgents extends React.Component {
         studentOnCall.push(agent);
       }
     });
+
+    studentAvailable = studentAvailable.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
+
+    studentOnCall = studentOnCall.sort((a, b) => {
+      return a.statusChangeTime - b.statusChangeTime;
+    });
     return (
       <div className="cbstats stats5 agentcontainer">
         <table>
@@ -30,8 +38,10 @@ export default class StudentAgents extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
+                  status={agent.status}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
@@ -44,8 +54,10 @@ export default class StudentAgents extends React.Component {
                 <AgentDisplay
                   key={agent.name}
                   userId={agent.userId}
+                  status={agent.status}
                   statusTimer={agent.statusChangeTime}
                   callsTaken={agent.callsTaken}
+                  penalty={agent.penalty}
                 />
               ];
             })}
